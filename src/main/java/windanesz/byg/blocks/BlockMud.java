@@ -2,10 +2,11 @@ package windanesz.byg.blocks;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.entity.EntityList;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -44,12 +45,30 @@ public class BlockMud extends BlockBasicBase {
     }
 
     @Override
+    public boolean isTopSolid(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return side == EnumFacing.UP || super.isSideSolid(state, world, pos, side);
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
+        return face == EnumFacing.UP ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
     public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable) {
         return direction == EnumFacing.UP;
     }
 
     @Override
     public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+        if (Config.isMudSlownessImmune(EntityList.getKey(entity))) {
+            return;
+        }
         double movementMultiplier = Config.getMudMovementMultiplier();
         entity.motionX *= movementMultiplier;
         entity.motionZ *= movementMultiplier;
@@ -60,6 +79,3 @@ public class BlockMud extends BlockBasicBase {
         drops.add(new ItemStack(ModItems.mud_balls, 4));
     }
 }
-        if (Config.isMudSlownessImmune(EntityList.getKey(entity))) {
-            return;
-        }
