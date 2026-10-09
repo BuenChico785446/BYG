@@ -1,6 +1,9 @@
 package windanesz.byg.event;
 
 import net.minecraft.advancements.Advancement;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,6 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishingRod;
@@ -30,6 +34,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import windanesz.byg.BiomesYouGo;
 import windanesz.byg.Config;
 import windanesz.byg.armour.ArmorMaterialKasai;
@@ -235,5 +240,44 @@ public final class EventHandler {
         }
         world.playSound(null, pos, SHEAR_SOUND, SoundCategory.NEUTRAL, 1.0f, 1.0f);
         world.setBlockState(pos, windanesz.byg.registry.ModBlocks.carved_melon.getDefaultState(), 3);
+    }
+
+    /** Right-clicking a BYG log or wood block with any axe strips it into its stripped variant, as in later versions. */
+    @SubscribeEvent
+    public static void onAxeStrip(PlayerInteractEvent.RightClickBlock event) {
+        ItemStack held = event.getItemStack();
+        if (held.isEmpty() || !held.getItem().getToolClasses(held).contains("axe")) {
+            return;
+        }
+        World world = event.getWorld();
+        BlockPos pos = event.getPos();
+        IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        if (block.getRegistryName() == null || !BiomesYouGo.MODID.equals(block.getRegistryName().getNamespace())) {
+            return;
+        }
+        String path = block.getRegistryName().getPath();
+        if (path.startsWith("stripped_") || !(path.endsWith("_log") || path.endsWith("_wood"))) {
+            return;
+        }
+        Block stripped = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(BiomesYouGo.MODID, "stripped_" + path));
+        if (stripped == null || stripped == Blocks.AIR) {
+            return;
+        }
+        event.setCanceled(true);
+        event.setCancellationResult(EnumActionResult.SUCCESS);
+        if (world.isRemote) {
+            return;
+        }
+        IBlockState strippedState = stripped.getDefaultState();
+        if (state.getPropertyKeys().contains(BlockDirectional.FACING) && strippedState.getPropertyKeys().contains(BlockDirectional.FACING)) {
+            strippedState = strippedState.withProperty(BlockDirectional.FACING, state.getValue(BlockDirectional.FACING));
+        }
+        world.setBlockState(pos, strippedState, 11);
+        world.playSound(null, pos, SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1.0f, 1.0f);
+        EntityPlayer player = event.getEntityPlayer();
+        if (!player.capabilities.isCreativeMode) {
+            held.damageItem(1, player);
+        }
     }
 }

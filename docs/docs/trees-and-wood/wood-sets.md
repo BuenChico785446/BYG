@@ -8,6 +8,8 @@ description: "Wood icons and natural biomes for every BYG tree family."
 
 BYG has 28 tree families. Each section shows its wood icons and the biomes where its trees or logs generate naturally. Log and wood icons use the block model's top and side textures; planks and doors use their flat source textures.
 
+Right-click a log or wood block with any axe to strip it into its stripped variant (the axe loses 1 durability). The stripped log keeps the orientation of the log it came from.
+
 ## Aspen
 
 **Biomes:** [Aspen Forest](../biomes/forests.md#byg_aspen_forest).
