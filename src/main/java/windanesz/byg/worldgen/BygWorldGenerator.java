@@ -481,7 +481,11 @@ public final class BygWorldGenerator implements IWorldGenerator {
         if (ModBlocks.leaf_pile_dead == null) {
             return;
         }
-        if (!Config.isFeatureDimension(dimID) || !matchesBiome(world, chunkX, chunkZ,
+        if (!Config.isFeatureDimension(dimID)) {
+            return;
+        }
+        boolean isAspenForest = matchesBiome(world, chunkX, chunkZ, "byg:byg_aspen_forest");
+        if (!isAspenForest && !matchesBiome(world, chunkX, chunkZ,
                 "byg:byg_seasonal_forest",
                 "byg:byg_bog",
                 "byg:byg_seasonal_deciduous",
@@ -490,7 +494,7 @@ public final class BygWorldGenerator implements IWorldGenerator {
             return;
         }
 
-        int attempts = Config.scaleClusterPlantAttempts(10);
+        int attempts = Config.scaleClusterPlantAttempts(isAspenForest ? 3 : 10);
         for (int i = 0; i < attempts; ++i) {
             int baseX = centeredChunkCoordinate(random, chunkX);
             int baseZ = centeredChunkCoordinate(random, chunkZ);
