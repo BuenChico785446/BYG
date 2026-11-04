@@ -71,7 +71,10 @@ public final class PaloTree {
                 z - (bounds[2] + bounds[3]) / 2);
         if (origin.getY() < 0 || origin.getY() + template.getSize().getY() > world.getActualHeight()
                 || !TemplateWorldgenHelper.fitsCurrentChunk(template, origin, rotation, mirror,
-                chunkCenterX - 8, chunkCenterZ - 8) || !BygTreePlacement.allowTrees(world, random, surface)) {
+                chunkCenterX - 8, chunkCenterZ - 8)
+                || !BygTreePlacement.hasRoom(world, x, z, origin.getX() + bounds[0], origin.getX() + bounds[1],
+                origin.getZ() + bounds[2], origin.getZ() + bounds[3])
+                || !BygTreePlacement.allowTrees(world, random, surface)) {
             return;
         }
         TemplateWorldgenHelper.placeTemplateWithSettings(world, template, origin,

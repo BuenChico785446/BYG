@@ -147,7 +147,7 @@ dependencies {
 }
 
 apply from: 'gradle/scripts/dependencies.gradle'
-apply from: 'gradle/scripts/profiling.gradle'
+
 
 // Adds Access Transformer files to tasks
 if (propertyBool('use_access_transformer')) {

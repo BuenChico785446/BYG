@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenReed;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.IWorldGenerator;
@@ -107,14 +106,14 @@ public final class BygWorldGenerator implements IWorldGenerator {
         }
         if (Config.isWorldgenFeatureEnabled("mud_block")) {
             generateMinableDeposit(random, blockX, blockZ, world, dimID, 0, () -> ModBlocks.mud_block, 45, 10, 100, 45,
-                    blockAt -> blockAt.getBlock() == Blocks.GRAVEL, "byg:byg_great_lakes");
+                    blockAt -> blockAt.getBlock() == Blocks.GRAVEL, true, "byg:byg_great_lakes");
         }
         if (Config.generatePaloTrees() && Config.isWoodSetEnabled("palo_verde")) {
             PaloTree.generateWorld(random, blockX, blockZ, world, dimID);
         }
         if (Config.isWorldgenFeatureEnabled("peat_dirt")) {
             generateMinableDeposit(random, blockX, blockZ, world, dimID, 0, () -> ModBlocks.peat_dirt, 32, 60, 20, 32,
-                    blockAt -> blockAt.getBlock() == Blocks.GRASS, "byg:byg_weeping_witch_forest");
+                    blockAt -> blockAt.getBlock() == Blocks.GRASS, true, "byg:byg_weeping_witch_forest");
         }
         if (Config.isWorldgenFeatureEnabled("peat_grass")) {
             SurfaceBlockWorldgen.generatePeatgrass(random, blockX, blockZ, world, dimID);
@@ -810,7 +809,7 @@ public final class BygWorldGenerator implements IWorldGenerator {
         Block block = blockSupplier.get();
         int configuredAttempts = Config.scaleSandAttempts(32);
         Predicate<IBlockState> sandMatcher = net.minecraft.block.state.pattern.BlockMatcher.forBlock(Blocks.SAND);
-        WorldGenMinable generator = new FastMinable(block.getDefaultState(), 32, sandMatcher);
+        FastMinable generator = new FastMinable(block.getDefaultState(), 32, sandMatcher).onlyInBiomes(biomeIds);
         for (int i = 0; i < configuredAttempts; ++i) {
             // WorldGenMinable adds +8 internally. Choose a conservative seed so
             // the complete vein remains in Forge's loaded 2x2 decoration window.
@@ -824,6 +823,13 @@ public final class BygWorldGenerator implements IWorldGenerator {
     private static void generateMinableDeposit(Random random, int chunkX, int chunkZ, World world, int dimID, int requiredDimension,
                                                Supplier<Block> blockSupplier, double attempts, int minY, int yRange, int veinSize,
                                                Predicate<IBlockState> targetPredicate, String... biomeIds) {
+        generateMinableDeposit(random, chunkX, chunkZ, world, dimID, requiredDimension, blockSupplier, attempts, minY, yRange, veinSize,
+                targetPredicate, false, biomeIds);
+    }
+
+    private static void generateMinableDeposit(Random random, int chunkX, int chunkZ, World world, int dimID, int requiredDimension,
+                                               Supplier<Block> blockSupplier, double attempts, int minY, int yRange, int veinSize,
+                                               Predicate<IBlockState> targetPredicate, boolean confineToBiomes, String... biomeIds) {
         if (requiredDimension == 0 ? !Config.isFeatureDimension(dimID) : dimID != requiredDimension) {
             return;
         }
@@ -833,7 +839,10 @@ public final class BygWorldGenerator implements IWorldGenerator {
         Block block = blockSupplier.get();
         int configuredAttempts = Config.scaleDepositAttempts(attempts);
         int configuredVeinSize = Config.scaleDepositVeinSize(veinSize);
-        WorldGenMinable generator = new FastMinable(block.getDefaultState(), configuredVeinSize, targetPredicate);
+        FastMinable generator = new FastMinable(block.getDefaultState(), configuredVeinSize, targetPredicate);
+        if (confineToBiomes) {
+            generator.onlyInBiomes(biomeIds);
+        }
         for (int i = 0; i < configuredAttempts; ++i) {
             // WorldGenMinable adds +8 internally. Choose a conservative seed so
             // the complete vein remains in Forge's loaded 2x2 decoration window.

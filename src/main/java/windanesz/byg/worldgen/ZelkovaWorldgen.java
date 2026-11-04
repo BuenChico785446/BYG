@@ -102,6 +102,11 @@ final class ZelkovaWorldgen {
                 || y < 1 || y + LAYERS[variant].length() >= world.getActualHeight()) {
             return;
         }
+        if (!FOREST.equals(Biome.REGISTRY.getNameForObject(world.getBiome(new BlockPos(trunkX, 0, trunkZ))))
+                || !BygTreePlacement.hasRoom(world, trunkX, trunkZ,
+                originX + bounds[0], originX + bounds[1], originZ + bounds[2], originZ + bounds[3])) {
+            return;
+        }
 
         IBlockState log = ModBlocks.zelkova_log.getDefaultState();
         IBlockState leaves = ModBlocks.zelkova_leaves.getDefaultState();

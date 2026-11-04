@@ -24,7 +24,8 @@ final class FrozenOakWorldgen {
             return;
         }
         BlockPos ground = AncientForestFloorWorldgen.findGround(world, x, z);
-        if (ground != null && BygTreePlacement.allowTrees(world, random, ground)) {
+        if (ground != null && BygTreePlacement.hasRoom(world, x, z, x - 2, x + 2, z - 2, z + 2)
+                && BygTreePlacement.allowTrees(world, random, ground)) {
             new DeadFrozenOakTreeGenerator().generate(world, random, ground.up());
         }
     }

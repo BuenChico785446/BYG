@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
 import net.minecraft.world.gen.structure.template.Template;
@@ -171,15 +172,21 @@ public final class TemplateWorldgenHelper {
         }
 
         int surfaceY = height - 1;
-        // The scan stops on the first non-replaceable block, which is the ground.
         BlockPos surfacePos = cursor;
         IBlockState blockAt = world.getBlockState(surfacePos);
         if (!matchesGround(blockAt, config.groundMatchers)) {
             return;
         }
 
-        if (isAncientTree(config.templatePath) && !hasAncientTreeClearing(world,
-                x + (bounds[0] + bounds[1]) / 2, z + (bounds[2] + bounds[3]) / 2, height)) {
+        int centerX = x + (bounds[0] + bounds[1]) / 2;
+        int centerZ = z + (bounds[2] + bounds[3]) / 2;
+        if (!isConfiguredBiome(world, centerX, centerZ, config.biomeIds)
+                || (config.tree && !BygTreePlacement.hasRoom(world, centerX, centerZ,
+                x + bounds[0], x + bounds[1], z + bounds[2], z + bounds[3]))) {
+            return;
+        }
+
+        if (isAncientTree(config.templatePath) && !hasAncientTreeClearing(world, centerX, centerZ, height)) {
             return;
         }
 
@@ -307,6 +314,16 @@ public final class TemplateWorldgenHelper {
                 }
             }
         }
+    }
+
+    private static boolean isConfiguredBiome(World world, int x, int z, ResourceLocation[] biomeIds) {
+        ResourceLocation biomeId = Biome.REGISTRY.getNameForObject(world.getBiome(new BlockPos(x, 0, z)));
+        for (ResourceLocation allowed : biomeIds) {
+            if (allowed.equals(biomeId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static BlockPos orchardTrunkLocalPos(String path) {
