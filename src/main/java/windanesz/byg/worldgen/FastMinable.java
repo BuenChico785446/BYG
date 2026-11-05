@@ -58,12 +58,13 @@ public class FastMinable extends WorldGenMinable {
         int sizeX = MathHelper.floor(Math.max(d0, d1) + reach) + 2 - originX;
         int sizeY = MathHelper.floor(Math.max(d4, d5) + reach) + 2 - originY;
         int sizeZ = MathHelper.floor(Math.max(d2, d3) + reach) + 2 - originZ;
-        boolean[] visited = new boolean[sizeX * sizeY * sizeZ];
+        int words = (sizeZ + 63) >> 6;
+        long[] columns = new long[sizeX * sizeY * words];
 
-        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
-        int chunkX = Integer.MIN_VALUE;
-        int chunkZ = Integer.MIN_VALUE;
-        Chunk chunk = null;
+        int span = this.numberOfBlocks / 8 + 6;
+        double[] squaredX = new double[span];
+        double[] squaredY = new double[span];
+        double[] squaredZ = new double[span];
 
         for (int i = 0; i < this.numberOfBlocks; ++i) {
             float f1 = (float) i / (float) this.numberOfBlocks;
@@ -73,46 +74,98 @@ public class FastMinable extends WorldGenMinable {
             double d9 = rand.nextDouble() * (double) this.numberOfBlocks / 16.0D;
             double d10 = (double) (MathHelper.sin((float) Math.PI * f1) + 1.0F) * d9 + 1.0D;
             double d11 = (double) (MathHelper.sin((float) Math.PI * f1) + 1.0F) * d9 + 1.0D;
-            int j = MathHelper.floor(d6 - d10 / 2.0D);
-            int k = MathHelper.floor(d7 - d11 / 2.0D);
-            int l = MathHelper.floor(d8 - d10 / 2.0D);
-            int i1 = MathHelper.floor(d6 + d10 / 2.0D);
-            int j1 = MathHelper.floor(d7 + d11 / 2.0D);
-            int k1 = MathHelper.floor(d8 + d10 / 2.0D);
+            double halfWidth = d10 / 2.0D;
+            double halfHeight = d11 / 2.0D;
+            int j = MathHelper.floor(d6 - halfWidth);
+            int k = MathHelper.floor(d7 - halfHeight);
+            int l = MathHelper.floor(d8 - halfWidth);
+            int i1 = MathHelper.floor(d6 + halfWidth);
+            int j1 = MathHelper.floor(d7 + halfHeight);
+            int k1 = MathHelper.floor(d8 + halfWidth);
+
+            if (i1 - j >= squaredX.length) {
+                squaredX = new double[i1 - j + 1];
+            }
+            if (j1 - k >= squaredY.length) {
+                squaredY = new double[j1 - k + 1];
+            }
+            if (k1 - l >= squaredZ.length) {
+                squaredZ = new double[k1 - l + 1];
+            }
+            for (int x = j; x <= i1; ++x) {
+                double d12 = ((double) x + 0.5D - d6) / halfWidth;
+                squaredX[x - j] = d12 * d12;
+            }
+            for (int y = k; y <= j1; ++y) {
+                double d13 = ((double) y + 0.5D - d7) / halfHeight;
+                squaredY[y - k] = d13 * d13;
+            }
+            for (int z = l; z <= k1; ++z) {
+                double d14 = ((double) z + 0.5D - d8) / halfWidth;
+                squaredZ[z - l] = d14 * d14;
+            }
 
             for (int x = j; x <= i1; ++x) {
-                double d12 = ((double) x + 0.5D - d6) / (d10 / 2.0D);
-                if (d12 * d12 < 1.0D) {
-                    for (int y = k; y <= j1; ++y) {
-                        double d13 = ((double) y + 0.5D - d7) / (d11 / 2.0D);
-                        if (d12 * d12 + d13 * d13 < 1.0D) {
-                            for (int z = l; z <= k1; ++z) {
-                                double d14 = ((double) z + 0.5D - d8) / (d10 / 2.0D);
-                                if (d12 * d12 + d13 * d13 + d14 * d14 < 1.0D) {
-                                    if (y < 0 || y >= 256 || x < -WORLD_LIMIT || x >= WORLD_LIMIT
-                                            || z < -WORLD_LIMIT || z >= WORLD_LIMIT) {
-                                        continue;
-                                    }
-                                    int index = ((x - originX) * sizeY + (y - originY)) * sizeZ + (z - originZ);
-                                    if (visited[index]) {
-                                        continue;
-                                    }
-                                    visited[index] = true;
-                                    int cx = x >> 4;
-                                    int cz = z >> 4;
-                                    if (chunk == null || cx != chunkX || cz != chunkZ) {
-                                        chunk = world.getChunk(cx, cz);
-                                        chunkX = cx;
-                                        chunkZ = cz;
-                                    }
-                                    IBlockState state = chunk.getBlockState(x, y, z);
-                                    pos.setPos(x, y, z);
-                                    if (state.getBlock().isReplaceableOreGen(state, world, pos, this.predicate)
-                                            && isInAllowedBiome(world, pos)) {
-                                        world.setBlockState(new BlockPos(x, y, z), this.oreBlock, PLACE_FLAGS);
-                                    }
-                                }
-                            }
+                double sumX = squaredX[x - j];
+                if (!(sumX < 1.0D)) {
+                    continue;
+                }
+                for (int y = k; y <= j1; ++y) {
+                    double sumXY = sumX + squaredY[y - k];
+                    if (!(sumXY < 1.0D)) {
+                        continue;
+                    }
+                    int from = l;
+                    int to = k1;
+                    while (from <= to && !(sumXY + squaredZ[from - l] < 1.0D)) {
+                        from++;
+                    }
+                    while (to >= from && !(sumXY + squaredZ[to - l] < 1.0D)) {
+                        to--;
+                    }
+                    if (from <= to) {
+                        markRange(columns, ((x - originX) * sizeY + (y - originY)) * words, from - originZ, to - originZ);
+                    }
+                }
+            }
+        }
+
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        int chunkX = Integer.MIN_VALUE;
+        int chunkZ = Integer.MIN_VALUE;
+        Chunk chunk = null;
+
+        for (int xi = 0; xi < sizeX; xi++) {
+            int x = originX + xi;
+            if (x < -WORLD_LIMIT || x >= WORLD_LIMIT) {
+                continue;
+            }
+            for (int yi = 0; yi < sizeY; yi++) {
+                int y = originY + yi;
+                if (y < 0 || y >= 256) {
+                    continue;
+                }
+                int row = (xi * sizeY + yi) * words;
+                for (int w = 0; w < words; w++) {
+                    long bits = columns[row + w];
+                    while (bits != 0L) {
+                        int z = originZ + (w << 6) + Long.numberOfTrailingZeros(bits);
+                        bits &= bits - 1L;
+                        if (z < -WORLD_LIMIT || z >= WORLD_LIMIT) {
+                            continue;
+                        }
+                        int cx = x >> 4;
+                        int cz = z >> 4;
+                        if (chunk == null || cx != chunkX || cz != chunkZ) {
+                            chunk = world.getChunk(cx, cz);
+                            chunkX = cx;
+                            chunkZ = cz;
+                        }
+                        IBlockState state = chunk.getBlockState(x, y, z);
+                        pos.setPos(x, y, z);
+                        if (state.getBlock().isReplaceableOreGen(state, world, pos, this.predicate)
+                                && isInAllowedBiome(world, pos)) {
+                            world.setBlockState(new BlockPos(x, y, z), this.oreBlock, PLACE_FLAGS);
                         }
                     }
                 }
@@ -120,6 +173,16 @@ public class FastMinable extends WorldGenMinable {
         }
 
         return true;
+    }
+
+    private static void markRange(long[] columns, int rowStart, int from, int to) {
+        int firstWord = from >> 6;
+        int lastWord = to >> 6;
+        for (int w = firstWord; w <= lastWord; w++) {
+            int low = w == firstWord ? from & 63 : 0;
+            int high = w == lastWord ? to & 63 : 63;
+            columns[rowStart + w] |= (-1L >>> (63 - high)) & (-1L << low);
+        }
     }
 
     private boolean isInAllowedBiome(World world, BlockPos pos) {
