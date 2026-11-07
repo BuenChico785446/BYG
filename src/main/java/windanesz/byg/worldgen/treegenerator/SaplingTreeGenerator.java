@@ -14,6 +14,7 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import windanesz.byg.Config;
 import windanesz.byg.blocks.BlockSappyMapleLog;
 import windanesz.byg.registry.ModBlocks;
+import windanesz.byg.worldgen.BygTreePlacement;
 
 import java.util.Random;
 import java.util.function.Supplier;
@@ -113,7 +114,7 @@ public final class SaplingTreeGenerator extends WorldGenAbstractTree implements 
         for (BlockPos pos : positions) {
             world.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
         }
-        if (this.generate(world, random, center)) {
+        if (this.place(world, random, center)) {
             return true;
         }
         for (int i = 0; i < positions.length; i++) {
@@ -124,11 +125,18 @@ public final class SaplingTreeGenerator extends WorldGenAbstractTree implements 
 
     @Override
     public boolean growTree(World world, Random random, BlockPos position) {
-        return this.generate(world, random, position);
+        return this.place(world, random, position);
     }
 
     @Override
     public boolean generate(World world, Random random, BlockPos position) {
+        int radius = this.getMaxLeafRadius();
+        return BygTreePlacement.hasRoom(world, position.getX(), position.getZ(),
+                position.getX() - radius, position.getX() + radius, position.getZ() - radius, position.getZ() + radius)
+                && this.place(world, random, position);
+    }
+
+    private boolean place(World world, Random random, BlockPos position) {
         if (this.style == TreeStyle.EBONY) {
             return this.generateEbony(world, random, position);
         }

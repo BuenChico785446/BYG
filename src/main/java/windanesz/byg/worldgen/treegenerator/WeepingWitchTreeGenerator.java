@@ -1,13 +1,16 @@
 package windanesz.byg.worldgen.treegenerator;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import windanesz.byg.registry.ModBlocks;
+import windanesz.byg.worldgen.BygTreePlacement;
 
 import java.util.Random;
 
@@ -22,7 +25,9 @@ import java.util.Random;
     public boolean generate(World world, Random random, BlockPos origin) {
         int height = 15 + random.nextInt(4);
         if (origin.getY() < 1 || origin.getY() + height + 3 >= world.getActualHeight()
-                || !isSoil(world.getBlockState(origin.down()).getBlock())) {
+                || !isSoil(world.getBlockState(origin.down()).getBlock())
+                || !BygTreePlacement.hasRoom(world, origin.getX(), origin.getZ(),
+                origin.getX() - 5, origin.getX() + 5, origin.getZ() - 5, origin.getZ() + 5)) {
             return false;
         }
         for (int y = 0; y <= height; y++) {
@@ -53,6 +58,8 @@ import java.util.Random;
             double angle = Math.PI * 2.0 * branch / 7.0 + random.nextDouble() * 0.35;
             int length = 3 + random.nextInt(3);
             int baseY = height - 5 + random.nextInt(3);
+            IBlockState limbLog = log.withProperty(BlockDirectional.FACING,
+                    Math.abs(Math.cos(angle)) >= Math.abs(Math.sin(angle)) ? EnumFacing.UP : EnumFacing.EAST);
             BlockPos tip = origin.up(baseY);
             for (int step = 1; step <= length; step++) {
                 BlockPos limb = origin.add((int) Math.round(Math.cos(angle) * step),
@@ -60,7 +67,7 @@ import java.util.Random;
                 if (!canReplace(world, limb)) {
                     break;
                 }
-                place(world, limb, log);
+                place(world, limb, limbLog);
                 tip = limb;
             }
             addLeaves(world, random, tip, leaves, flowers);

@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import windanesz.byg.client.gui.GuiHandlerBYG;
+import windanesz.byg.command.CommandByg;
 import windanesz.byg.event.TerrainGenEventHandler;
 import windanesz.byg.init.BygInitialization;
 import windanesz.byg.proxy.IProxyBYG;
@@ -55,6 +56,7 @@ public class BiomesYouGo {
 
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
+        event.registerServerCommand(new CommandByg());
         proxy.serverLoad(event);
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import windanesz.byg.registry.ModBlocks;
+import windanesz.byg.worldgen.BygTreePlacement;
 
 import java.util.Random;
 
@@ -28,7 +29,9 @@ public final class AspenTreeGenerator extends WorldGenAbstractTree {
                 || !world.isAreaLoaded(position.add(-4, -1, -4), position.add(4, height + 2, 4))) {
             return false;
         }
-        if (!isSoil(world, position.down())) {
+        if (!isSoil(world, position.down())
+                || !BygTreePlacement.hasRoom(world, position.getX(), position.getZ(),
+                position.getX() - 3, position.getX() + 3, position.getZ() - 3, position.getZ() + 3)) {
             return false;
         }
         for (int y = 0; y <= height + 1; y++) {

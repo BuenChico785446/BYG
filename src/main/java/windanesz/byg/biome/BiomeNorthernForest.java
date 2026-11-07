@@ -100,7 +100,9 @@ public class BiomeNorthernForest
             }
             int[] bounds = windanesz.byg.worldgen.TemplateWorldgenHelper.getFootprintBounds(template.getSize().getX(), template.getSize().getZ(), rotation, mirror);
             BlockPos placeTo = pos.add(-((bounds[0] + bounds[1]) / 2), 0, -((bounds[2] + bounds[3]) / 2));
-            if (!windanesz.byg.worldgen.TemplateWorldgenHelper.fitsCurrentChunk(template, placeTo, rotation, mirror, pos)) {
+            if (!windanesz.byg.worldgen.TemplateWorldgenHelper.fitsCurrentChunk(template, placeTo, rotation, mirror, pos)
+                    || !windanesz.byg.worldgen.BygTreePlacement.hasRoom(world, pos.getX(), pos.getZ(),
+                    placeTo.getX() + bounds[0], placeTo.getX() + bounds[1], placeTo.getZ() + bounds[2], placeTo.getZ() + bounds[3])) {
                 return false;
             }
             windanesz.byg.worldgen.TemplateWorldgenHelper.placeTemplateWithSettings(world, template, placeTo, windanesz.byg.worldgen.TemplateWorldgenHelper.chunkPlacementSettings(par2Random, rotation, mirror, pos));

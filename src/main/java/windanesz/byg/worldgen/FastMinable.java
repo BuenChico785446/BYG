@@ -4,13 +4,18 @@ import java.util.Random;
 
 import com.google.common.base.Predicate;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.server.management.PlayerChunkMapEntry;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 
 /** Must consume the Random exactly like {@link WorldGenMinable} so existing seeds keep producing the same veins. */
@@ -22,6 +27,7 @@ public class FastMinable extends WorldGenMinable {
     private final IBlockState oreBlock;
     private final int numberOfBlocks;
     private final Predicate<IBlockState> predicate;
+    private final boolean writesDirectly;
     private ResourceLocation[] allowedBiomes;
 
     public FastMinable(IBlockState state, int blockCount, Predicate<IBlockState> predicate) {
@@ -29,6 +35,7 @@ public class FastMinable extends WorldGenMinable {
         this.oreBlock = state;
         this.numberOfBlocks = blockCount;
         this.predicate = predicate;
+        this.writesDirectly = !state.getBlock().hasTileEntity(state);
     }
 
     public FastMinable onlyInBiomes(String... biomeIds) {
@@ -134,6 +141,8 @@ public class FastMinable extends WorldGenMinable {
         int chunkX = Integer.MIN_VALUE;
         int chunkZ = Integer.MIN_VALUE;
         Chunk chunk = null;
+        ExtendedBlockStorage[] storages = null;
+        PlayerChunkMapEntry watchers = null;
 
         for (int xi = 0; xi < sizeX; xi++) {
             int x = originX + xi;
@@ -160,11 +169,26 @@ public class FastMinable extends WorldGenMinable {
                             chunk = world.getChunk(cx, cz);
                             chunkX = cx;
                             chunkZ = cz;
+                            storages = chunk.getBlockStorageArray();
+                            watchers = chunk.isPopulated() && world instanceof WorldServer
+                                    ? ((WorldServer) world).getPlayerChunkMap().getEntry(cx, cz) : null;
                         }
                         IBlockState state = chunk.getBlockState(x, y, z);
                         pos.setPos(x, y, z);
-                        if (state.getBlock().isReplaceableOreGen(state, world, pos, this.predicate)
-                                && isInAllowedBiome(world, pos)) {
+                        if (!state.getBlock().isReplaceableOreGen(state, world, pos, this.predicate)
+                                || !isInAllowedBiome(world, pos)) {
+                            continue;
+                        }
+                        ExtendedBlockStorage storage = storages[y >> 4];
+                        if (this.writesDirectly && storage != Chunk.NULL_BLOCK_STORAGE && isPlainTerrain(state)
+                                && state.getLightOpacity() == this.oreBlock.getLightOpacity()
+                                && state.getLightValue() == this.oreBlock.getLightValue()) {
+                            storage.set(x & 15, y & 15, z & 15, this.oreBlock);
+                            chunk.markDirty();
+                            if (watchers != null) {
+                                watchers.blockChanged(x & 15, y, z & 15);
+                            }
+                        } else {
                             world.setBlockState(new BlockPos(x, y, z), this.oreBlock, PLACE_FLAGS);
                         }
                     }
@@ -173,6 +197,12 @@ public class FastMinable extends WorldGenMinable {
         }
 
         return true;
+    }
+
+    private static boolean isPlainTerrain(IBlockState state) {
+        Block block = state.getBlock();
+        return block == Blocks.STONE || block == Blocks.DIRT || block == Blocks.GRASS || block == Blocks.GRAVEL
+                || block == Blocks.SAND || block == Blocks.NETHERRACK || block == Blocks.SNOW;
     }
 
     private static void markRange(long[] columns, int rowStart, int from, int to) {

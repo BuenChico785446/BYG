@@ -6,6 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import windanesz.byg.registry.ModBlocks;
+import windanesz.byg.worldgen.BygTreePlacement;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Random;
@@ -51,7 +52,9 @@ public final class PineTreeGenerator extends WorldGenAbstractTree implements Tre
         int trunkOffset = large ? variant.width / 2 - 1 : variant.width / 2;
         BlockPos origin = trunkOrigin.add(-trunkOffset, 0, -trunkOffset);
         if (position.getY() < 1 || position.getY() + variant.height >= world.getHeight()
-                || !world.isAreaLoaded(origin.down(), origin.add(variant.width - 1, variant.height, variant.depth - 1))) {
+                || !world.isAreaLoaded(origin.down(), origin.add(variant.width - 1, variant.height, variant.depth - 1))
+                || (this.size != Size.SAPLING && !BygTreePlacement.hasRoom(world, trunkOrigin.getX(), trunkOrigin.getZ(),
+                origin.getX(), origin.getX() + variant.width - 1, origin.getZ(), origin.getZ() + variant.depth - 1))) {
             return false;
         }
         int trunkWidth = large ? 2 : 1;

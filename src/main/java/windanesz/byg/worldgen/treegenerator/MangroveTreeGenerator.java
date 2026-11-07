@@ -2,15 +2,18 @@ package windanesz.byg.worldgen.treegenerator;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import windanesz.byg.registry.ModBlocks;
+import windanesz.byg.worldgen.BygTreePlacement;
 
 import java.util.Random;
 
@@ -57,7 +60,10 @@ public final class MangroveTreeGenerator extends WorldGenAbstractTree {
         if (!isInsideOriginBiome(world, position, crownCenter, horizontalRadius)) {
             return false;
         }
-        if (!hasCanopyRoom(world, crownCenter, horizontalRadius)) {
+        if (!hasCanopyRoom(world, crownCenter, horizontalRadius)
+                || !BygTreePlacement.hasRoom(world, position.getX(), position.getZ(),
+                crownCenter.getX() - horizontalRadius, crownCenter.getX() + horizontalRadius,
+                crownCenter.getZ() - horizontalRadius, crownCenter.getZ() + horizontalRadius)) {
             return false;
         }
 
@@ -159,11 +165,13 @@ public final class MangroveTreeGenerator extends WorldGenAbstractTree {
         for (int branch = 0; branch < branchCount; branch++) {
             double angle = phase + Math.PI * 2.0D * branch / branchCount + (random.nextDouble() - 0.5D) * 0.4D;
             int length = 2 + random.nextInt(4);
+            IBlockState limb = log.withProperty(BlockDirectional.FACING,
+                    Math.abs(Math.cos(angle)) >= Math.abs(Math.sin(angle)) ? EnumFacing.UP : EnumFacing.EAST);
             for (int step = 0; step <= length; step++) {
                 int x = (int) Math.round(Math.cos(angle) * step);
                 int z = (int) Math.round(Math.sin(angle) * step);
                 int y = step == length && random.nextBoolean() ? 1 : 0;
-                placeRootLog(world, center.add(x, y, z), log);
+                placeRootLog(world, center.add(x, y, z), limb);
             }
         }
     }
