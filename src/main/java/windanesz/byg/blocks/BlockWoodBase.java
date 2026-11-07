@@ -37,5 +37,10 @@ public class BlockWoodBase extends Block {
     public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
         return this.silkHarvest;
     }
+
+    @Override
+    public boolean canSustainLeaves(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return true;
+    }
 }
 

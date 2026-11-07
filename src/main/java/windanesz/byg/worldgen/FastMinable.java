@@ -1,5 +1,7 @@
 package windanesz.byg.worldgen;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import com.google.common.base.Predicate;
@@ -29,6 +31,7 @@ public class FastMinable extends WorldGenMinable {
     private final Predicate<IBlockState> predicate;
     private final boolean writesDirectly;
     private ResourceLocation[] allowedBiomes;
+    private Biome[] resolvedBiomes;
 
     public FastMinable(IBlockState state, int blockCount, Predicate<IBlockState> predicate) {
         super(state, blockCount, predicate);
@@ -44,6 +47,7 @@ public class FastMinable extends WorldGenMinable {
             for (int i = 0; i < biomeIds.length; i++) {
                 this.allowedBiomes[i] = new ResourceLocation(biomeIds[i]);
             }
+            this.resolvedBiomes = null;
         }
         return this;
     }
@@ -173,13 +177,14 @@ public class FastMinable extends WorldGenMinable {
                             watchers = chunk.isPopulated() && world instanceof WorldServer
                                     ? ((WorldServer) world).getPlayerChunkMap().getEntry(cx, cz) : null;
                         }
-                        IBlockState state = chunk.getBlockState(x, y, z);
+                        ExtendedBlockStorage storage = storages[y >> 4];
+                        IBlockState state = storage == Chunk.NULL_BLOCK_STORAGE
+                                ? Blocks.AIR.getDefaultState() : storage.get(x & 15, y & 15, z & 15);
                         pos.setPos(x, y, z);
                         if (!state.getBlock().isReplaceableOreGen(state, world, pos, this.predicate)
                                 || !isInAllowedBiome(world, pos)) {
                             continue;
                         }
-                        ExtendedBlockStorage storage = storages[y >> 4];
                         if (this.writesDirectly && storage != Chunk.NULL_BLOCK_STORAGE && isPlainTerrain(state)
                                 && state.getLightOpacity() == this.oreBlock.getLightOpacity()
                                 && state.getLightValue() == this.oreBlock.getLightValue()) {
@@ -219,12 +224,26 @@ public class FastMinable extends WorldGenMinable {
         if (this.allowedBiomes == null) {
             return true;
         }
-        ResourceLocation biomeId = Biome.REGISTRY.getNameForObject(world.getBiome(pos));
-        for (ResourceLocation allowed : this.allowedBiomes) {
-            if (allowed.equals(biomeId)) {
+        if (this.resolvedBiomes == null) {
+            this.resolvedBiomes = resolveBiomes(this.allowedBiomes);
+        }
+        Biome biome = world.getBiome(pos);
+        for (Biome allowed : this.resolvedBiomes) {
+            if (allowed == biome) {
                 return true;
             }
         }
         return false;
+    }
+
+    private static Biome[] resolveBiomes(ResourceLocation[] ids) {
+        List<Biome> biomes = new ArrayList<>(ids.length);
+        for (ResourceLocation id : ids) {
+            Biome biome = Biome.REGISTRY.getObject(id);
+            if (biome != null) {
+                biomes.add(biome);
+            }
+        }
+        return biomes.toArray(new Biome[0]);
     }
 }

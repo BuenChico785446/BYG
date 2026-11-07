@@ -1,5 +1,6 @@
 package windanesz.byg.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.SoundType;
@@ -13,7 +14,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import windanesz.byg.Config;
 import windanesz.byg.client.BYGTab;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Base for BYG leaves. Extends vanilla {@link BlockLeaves} so vanilla leaf decay applies and mods that detect
@@ -57,6 +65,48 @@ public abstract class BlockBygLeaves extends BlockLeaves {
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ,
                                             int meta, EntityLivingBase placer) {
         return this.getDefaultState().withProperty(DECAYABLE, false);
+    }
+
+    @Override
+    public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+        if (world.isRemote || !state.getValue(CHECK_DECAY) || !state.getValue(DECAYABLE)) {
+            return;
+        }
+        int range = Config.leafDecayRange();
+        if (!world.isAreaLoaded(pos, range + 1)) {
+            return;
+        }
+        if (isSupported(world, pos, range)) {
+            world.setBlockState(pos, state.withProperty(CHECK_DECAY, false), 4);
+        } else {
+            this.dropBlockAsItem(world, pos, state, 0);
+            world.setBlockToAir(pos);
+        }
+    }
+
+    private static boolean isSupported(World world, BlockPos origin, int range) {
+        Set<Long> visited = new HashSet<>();
+        visited.add(origin.toLong());
+        List<BlockPos> frontier = new ArrayList<>();
+        frontier.add(origin);
+        for (int depth = 1; depth <= range && !frontier.isEmpty(); depth++) {
+            List<BlockPos> next = new ArrayList<>();
+            for (BlockPos current : frontier) {
+                for (EnumFacing facing : EnumFacing.values()) {
+                    BlockPos neighbour = current.offset(facing);
+                    IBlockState neighbourState = world.getBlockState(neighbour);
+                    Block block = neighbourState.getBlock();
+                    if (block.canSustainLeaves(neighbourState, world, neighbour)) {
+                        return true;
+                    }
+                    if (depth < range && block.isLeaves(neighbourState, world, neighbour) && visited.add(neighbour.toLong())) {
+                        next.add(neighbour);
+                    }
+                }
+            }
+            frontier = next;
+        }
+        return false;
     }
 
     @Override

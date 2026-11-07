@@ -10,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -41,13 +42,18 @@ public class BiomeDeadSea
         this.decorator.bigMushroomsPerChunk = 0;
         this.decorator.reedsPerChunk = 0;
         this.decorator.cactiPerChunk = 0;
-        this.decorator.sandPatchesPerChunk = 256;
+        this.decorator.sandPatchesPerChunk = 0;
         this.decorator.gravelPatchesPerChunk = 0;
         this.spawnableMonsterList.clear();
         this.spawnableCreatureList.clear();
         this.spawnableWaterCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
         this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityGuardian.class, 40, 1, 5));
+    }
+
+    @Override
+    public BiomeDecorator createBiomeDecorator() {
+        return new DeadSeaDecorator();
     }
 
     @SideOnly(Side.CLIENT)

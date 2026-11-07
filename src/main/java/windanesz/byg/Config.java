@@ -945,6 +945,21 @@ public final class Config {
         return worldgenSettings.generatePaloTrees;
     }
 
+    public static boolean avoidCqrDungeons() {
+        ensureBaked();
+        return worldgenSettings.avoidCqrDungeons;
+    }
+
+    public static int cqrAvoidanceRadiusChunks() {
+        ensureBaked();
+        return worldgenSettings.cqrAvoidanceRadiusChunks;
+    }
+
+    public static int leafDecayRange() {
+        ensureBaked();
+        return blockSettings.leafDecayRange;
+    }
+
 
     public static boolean generateRockySurfaceFeatures() {
         ensureBaked();
@@ -1900,6 +1915,12 @@ public final class Config {
         @net.minecraftforge.common.config.Config.Comment("Chance for an eligible quagmire land surface to be a slime pocket. Set to 0.0 to disable slime generation.")
         @net.minecraftforge.common.config.Config.RangeDouble(min = 0.0D, max = 0.05D)
         public double quagmireSlimeChance = 0.004D;
+        @net.minecraftforge.common.config.Config.Comment({
+                "How many blocks of connected leaves may lie between a leaf and the nearest log or wood block before the leaf decays once a tree is cut or damaged.",
+                "Vanilla uses 4, which cuts the outer crown off many BYG trees. Applies to leaves the next time they check for decay."
+        })
+        @net.minecraftforge.common.config.Config.RangeInt(min = 4, max = 12)
+        public int leafDecayRange = 7;
         public double springwaterBubbleChance = 0.4D;
         public int springwaterBubbleParticleCount = 2;
         @net.minecraftforge.common.config.Config.Comment("Whether Springwater grants Regeneration I while an entity remains in it.")
@@ -2157,6 +2178,13 @@ public final class Config {
         @net.minecraftforge.common.config.Config.Comment("Highest Y level where sepinite deposits can start. Must be at least the minimum Y.")
         @net.minecraftforge.common.config.Config.RangeInt(min = 1, max = 255)
         public int sepiniteMaxY = 119;
+
+        @net.minecraftforge.common.config.Config.Comment("Keep BYG trees from generating around Chocolate Quest Repoured dungeons so the dungeons are not cut into the forest. Only has an effect when CQR is installed. Applies to newly generated chunks.")
+        public boolean avoidCqrDungeons = true;
+
+        @net.minecraftforge.common.config.Config.Comment("Radius in chunks around a CQR dungeon that stays free of BYG trees.")
+        @net.minecraftforge.common.config.Config.RangeInt(min = 0, max = 16)
+        public int cqrAvoidanceRadiusChunks = 5;
 
         public boolean generateEnchantedVillage = true;
         public boolean generatePaloTrees = true;
