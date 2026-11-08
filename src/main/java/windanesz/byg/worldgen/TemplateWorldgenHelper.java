@@ -335,7 +335,7 @@ public final class TemplateWorldgenHelper {
         }
     }
 
-    /** Template-local x/z of every stem block in the bottom layer of the giant flower, red oak, mahogany, Sonoran cactus and savanna canopy tree templates. */
+    /** Template-local x/z of every stem or trunk block in the bottom layer of the templates that must stand on the ground under each of those blocks. */
     private static int[][] stemBase(String path) {
         switch (path) {
             case "flower1": return new int[][]{{3, 4}, {4, 4}, {4, 5}};
@@ -376,6 +376,113 @@ public final class TemplateWorldgenHelper {
             case "sc_tree8": return new int[][]{{6, 5}, {5, 6}};
             case "sc_tree9": return new int[][]{{4, 4}};
             case "flower9": return new int[][]{{4, 1}, {4, 2}, {5, 2}};
+            case "bluespruce1":
+            case "bluespruce2":
+            case "borealtree1":
+            case "borealtree2":
+            case "borealtree4":
+            case "borealtree5":
+            case "borealtree6":
+            case "borealtree7":
+            case "dstree1":
+            case "dstree2":
+            case "dstree3":
+            case "dstree4":
+            case "dstree6":
+            case "dtree1":
+            case "dtree2":
+            case "dtree3":
+            case "dtree4":
+            case "dtree6":
+            case "evergreen_tree1":
+            case "evergreen_tree2":
+            case "mead_tree2":
+            case "mead_tree3":
+            case "mead_tree4":
+            case "orangespruce1":
+            case "orangespruce2":
+            case "redspruce1":
+            case "redspruce2":
+            case "seasonbirch1":
+            case "seasonbirch2":
+            case "seasonbirch3":
+            case "seasonbirch4":
+            case "seasonbirch5":
+            case "seasonbirch6":
+            case "seasonbirch7":
+            case "seasonbirch8":
+            case "seasonbirch9":
+            case "sf_10":
+            case "sf_11":
+            case "sf_13":
+            case "sf_14":
+            case "sf_15":
+            case "sf_16":
+            case "sf_18":
+            case "sf_tree1":
+            case "sf_tree2":
+            case "sf_tree3":
+            case "sf_tree4":
+            case "sf_tree5":
+            case "sf_tree6":
+            case "sf_tree7":
+            case "sf_tree8":
+            case "spruce1":
+            case "spruce2":
+            case "yellowspruce1":
+            case "yellowspruce2": return new int[][]{{2, 2}};
+            case "bluespruce3":
+            case "bluespruce4":
+            case "bluespruce6":
+            case "borealtree3":
+            case "ironwood2":
+            case "northern_tree1":
+            case "northern_tree2":
+            case "orangespruce3":
+            case "orangespruce4":
+            case "orangespruce6":
+            case "redspruce3":
+            case "redspruce4":
+            case "redspruce6":
+            case "sf_12":
+            case "spruce3":
+            case "spruce4":
+            case "spruce6":
+            case "yellowspruce3":
+            case "yellowspruce4":
+            case "yellowspruce6": return new int[][]{{3, 3}};
+            case "bluespruce5":
+            case "bog_tree1":
+            case "bog_tree2":
+            case "bog_tree4":
+            case "bog_tree5":
+            case "ironwood1":
+            case "orangespruce5":
+            case "redspruce5":
+            case "spruce5":
+            case "yellowspruce5": return new int[][]{{1, 1}};
+            case "bog_tree3": return new int[][]{{2, 1}};
+            case "dstree5":
+            case "dtree5":
+            case "ironwood3": return new int[][]{{3, 4}};
+            case "mead_tree1": return new int[][]{{6, 6}};
+            case "northern_tree3":
+            case "tbluespruce1":
+            case "tbluespruce2":
+            case "torangespruce1":
+            case "torangespruce2":
+            case "tspruce1":
+            case "tspruce2":
+            case "tyellowspruce1":
+            case "tyellowspruce2": return new int[][]{{4, 4}, {4, 5}, {5, 4}, {5, 5}};
+            case "northern_tree4": return new int[][]{{7, 7}, {7, 8}, {8, 7}, {8, 8}};
+            case "palo_verde3": return new int[][]{{3, 6}, {4, 5}};
+            case "sf_17": return new int[][]{{3, 6}};
+            case "sf_tree9": return new int[][]{{6, 4}};
+            case "tbluespruce3":
+            case "torangespruce3":
+            case "tspruce3":
+            case "tyellowspruce3": return new int[][]{{3, 3}, {3, 4}, {4, 3}, {4, 4}};
             default: return null;
         }
     }

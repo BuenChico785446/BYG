@@ -126,7 +126,26 @@ public final class RedwoodTreeGenerator extends WorldGenAbstractTree {
         if (variant != 6 && variant != 7) {
             placeCrown(world, random, position.up(height - 2), 1, 2, leaves);
         }
+        placeCap(world, position.up(height - 1), leaves);
         return true;
+    }
+
+    private void placeCap(World world, BlockPos top, IBlockState leaves) {
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
+                placeLeaf(world, top.add(x, 0, z), leaves);
+                if (x == 0 || z == 0) {
+                    placeLeaf(world, top.add(x, 1, z), leaves);
+                }
+            }
+        }
+        placeLeaf(world, top.up(2), leaves);
+    }
+
+    private void placeLeaf(World world, BlockPos pos, IBlockState leaves) {
+        if (isReplaceable(world, pos)) {
+            setBlockAndNotifyAdequately(world, pos, leaves);
+        }
     }
 
     private boolean canPlaceReferenceTrunk(World world, BlockPos base, int height) {

@@ -71,7 +71,7 @@ final class AncientForestMushroomWorldgen {
                 }
             }
         }
-        for (int y = ground.getY() + 1; y <= capY; y++) {
+        for (int y = ground.getY() + 1; y < capY; y++) {
             shape.put(new BlockPos(ground.getX(), y, ground.getZ()), stem);
         }
 

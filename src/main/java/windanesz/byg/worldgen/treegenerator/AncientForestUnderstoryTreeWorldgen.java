@@ -4,6 +4,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import windanesz.byg.Config;
@@ -95,6 +96,11 @@ public final class AncientForestUnderstoryTreeWorldgen {
                 shape.put(new BlockPos(baseX + leanX, baseY + y, baseZ), log);
             }
             shape.put(new BlockPos(x, baseY + y, z), log);
+        }
+        BlockPos top = new BlockPos(crownX, baseY + height, crownZ);
+        shape.put(top.up(), leaves);
+        for (EnumFacing facing : EnumFacing.Plane.HORIZONTAL) {
+            shape.put(top.offset(facing), leaves);
         }
 
         for (Map.Entry<BlockPos, IBlockState> block : shape.entrySet()) {
