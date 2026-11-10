@@ -3,6 +3,7 @@ package windanesz.byg.registry;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -52,6 +53,11 @@ public class SmeltingRecipes {
         if (windanesz.byg.registry.ModBlocks.white_sand != null) {
             GameRegistry.addSmelting(new ItemStack(windanesz.byg.registry.ModBlocks.white_sand, 1), new ItemStack((Block) Blocks.STAINED_GLASS, 1, 0), 1.0f);
         }
+        for (Block cactus : new Block[]{ModBlocks.sonoran_cactus, ModBlocks.sonoran_cactus_flowering}) {
+            if (cactus != null) {
+                GameRegistry.addSmelting(new ItemStack(cactus, 1), new ItemStack(Items.DYE, 1, EnumDyeColor.GREEN.getDyeDamage()), 0.2f);
+            }
+        }
         registerCharcoalRecipes();
         registerFuelValues();
         GameRegistry.registerFuelHandler((IFuelHandler) SmeltingRecipes::getFuelBurnTime);
@@ -91,6 +97,13 @@ public class SmeltingRecipes {
         registerOreDictionaryFuel("bookshelfWood", 300);
         registerOreDictionaryFuel("treeSapling", 100);
         registerDoorFuelValues();
+        registerBlockFuel(ModBlocks.leaf_pile_dead, 100);
+    }
+
+    private static void registerBlockFuel(Block block, int burnTime) {
+        if (block != null) {
+            FUEL_VALUES.put(createStackKey(new ItemStack(block, 1, 0)), burnTime);
+        }
     }
 
     private static void registerOreDictionaryFuel(String oreName, int burnTime, String... requiredPathParts) {

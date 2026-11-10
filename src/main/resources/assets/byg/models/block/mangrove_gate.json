@@ -1,8 +1,0 @@
-{
-  "parent": "byg:gate_closed",
-  "textures": {
-    "all": "byg:blocks/mangrove_planks",
-    "particle": "byg:blocks/mangrove_planks",
-    "aspen_planks": "byg:blocks/mangrove_planks"
-  }
-}

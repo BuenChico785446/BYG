@@ -22,12 +22,17 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.IShearable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import windanesz.byg.registry.ModBlocks;
 
+import javax.annotation.Nonnull;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
-public class BlockTallPrairieGrass extends BlockBush implements IPlantable {
+public class BlockTallPrairieGrass extends BlockBush implements IPlantable, IShearable {
     public static final PropertyEnum<Half> HALF = PropertyEnum.create("half", Half.class);
 
     public BlockTallPrairieGrass() {
@@ -159,7 +164,20 @@ public class BlockTallPrairieGrass extends BlockBush implements IPlantable {
 
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        // Intentionally drops nothing.
+        if (state.getValue(HALF) == Half.LOWER) {
+            PlantDrops.addGrassSeed(drops, world, fortune);
+        }
+    }
+
+    @Override
+    public boolean isShearable(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos) {
+        return true;
+    }
+
+    @Nonnull
+    @Override
+    public List<ItemStack> onSheared(@Nonnull ItemStack item, IBlockAccess world, BlockPos pos, int fortune) {
+        return Collections.singletonList(new ItemStack(ModBlocks.prairie_grass, 2));
     }
 
     @Override

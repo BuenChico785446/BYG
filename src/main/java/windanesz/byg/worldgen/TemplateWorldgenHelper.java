@@ -245,7 +245,8 @@ public final class TemplateWorldgenHelper {
                     groundY--;
                     stemCursor = new BlockPos(stem.getX(), groundY, stem.getZ());
                 }
-                if (!matchesGround(world.getBlockState(stemCursor), config.groundMatchers)) {
+                if (!matchesGround(world.getBlockState(stemCursor), config.groundMatchers)
+                        || config.templatePath.startsWith("cact") && world.getBlockState(stemCursor.up()).getMaterial().isLiquid()) {
                     return;
                 }
                 lowest = Math.min(lowest, groundY);

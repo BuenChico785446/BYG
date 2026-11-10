@@ -1,8 +1,0 @@
-{
-  "parent": "byg:gate_closed",
-  "textures": {
-    "all": "byg:blocks/witch_hazel_planks",
-    "particle": "byg:blocks/witch_hazel_planks",
-    "aspen_planks": "byg:blocks/witch_hazel_planks"
-  }
-}

@@ -1,0 +1,6 @@
+{
+  "parent": "block/fence_gate_wall_closed",
+  "textures": {
+    "texture": "byg:blocks/zelkova_planks"
+  }
+}

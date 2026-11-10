@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "byg:biome_content_enabled",
+      "set": "mushroom_decor"
+    }
+  ],
+  "group": "byg",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "byg:wooden_mortar"
+    },
+    {
+      "item": "byg:wood_blewit"
+    }
+  ],
+  "result": {
+    "item": "minecraft:dye",
+    "data": 4,
+    "count": 1
+  }
+}

@@ -27,6 +27,10 @@ import java.util.function.Supplier;
 
 public final class BygWorldGenerator implements IWorldGenerator {
     public static final BygWorldGenerator INSTANCE = new BygWorldGenerator();
+    private static final String[] STONE_PEBBLE_BIOMES = {"byg:byg_stone_brushlands", "byg:byg_bluff_mountains", "byg:byg_pine_mountains",
+            "byg:byg_snowy_pine_mountains", "byg:byg_dover_mountains", "byg:byg_grassland_plateau", "byg:byg_chaparral_lowlands", "byg:byg_alps"};
+    private static final String[] STONE_SPIKE_BIOMES = {"byg:byg_stone_brushlands", "byg:byg_bluff_mountains", "byg:byg_pine_mountains",
+            "byg:byg_dover_mountains", "byg:byg_grassland_plateau", "byg:byg_chaparral_lowlands"};
     private static final EnumFacing[] HORIZONTAL_FACINGS = new EnumFacing[]{EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST};
 
     private BygWorldGenerator() {
@@ -58,6 +62,12 @@ public final class BygWorldGenerator implements IWorldGenerator {
         generateBirchShelfFungi(random, blockX, blockZ, world, dimID);
         generateFallenBirchLogs(random, blockX, blockZ, world, dimID);
         generateDeadLeafPiles(random, blockX, blockZ, world, dimID);
+        if (Config.isWorldgenFeatureEnabled("stone_pebbles")) {
+            generateGroundBlocks(random, blockX, blockZ, world, dimID, ModBlocks.stone_pebbles, STONE_PEBBLE_BIOMES, 8, 1, true);
+        }
+        if (Config.isWorldgenFeatureEnabled("stone_spike")) {
+            generateGroundBlocks(random, blockX, blockZ, world, dimID, ModBlocks.stone_spike, STONE_SPIKE_BIOMES, 1, 2, false);
+        }
         GreatLakesIslandWorldgen.generate(random, blockX, blockZ, world, dimID);
         generateFloatingMangroveLogs(random, blockX, blockZ, world, dimID);
         generateFloatingMarshlandLogs(random, blockX, blockZ, world, dimID);
@@ -474,6 +484,28 @@ public final class BygWorldGenerator implements IWorldGenerator {
         world.setBlockState(lowerPos.up(), Blocks.DOUBLE_PLANT.getDefaultState()
                 .withProperty(BlockDoublePlant.VARIANT, BlockDoublePlant.EnumPlantType.GRASS)
                 .withProperty(BlockDoublePlant.HALF, BlockDoublePlant.EnumBlockHalf.UPPER), 2);
+    }
+
+    private static void generateGroundBlocks(Random random, int chunkX, int chunkZ, World world, int dimID, Block block,
+                                             String[] biomeIds, int attempts, int oneIn, boolean randomFacing) {
+        if (block == null || block == Blocks.AIR || !Config.isFeatureDimension(dimID) || !matchesBiome(world, chunkX, chunkZ, biomeIds)) {
+            return;
+        }
+        if (oneIn > 1 && random.nextInt(oneIn) != 0) {
+            return;
+        }
+        int count = Config.scaleClusterPlantAttempts(attempts);
+        for (int i = 0; i < count; ++i) {
+            BlockPos placePos = findGroundPlacementThroughLeaves(world, centeredChunkCoordinate(random, chunkX), centeredChunkCoordinate(random, chunkZ));
+            if (placePos == null) {
+                continue;
+            }
+            IBlockState state = block.getDefaultState();
+            if (randomFacing) {
+                state = state.withProperty(BlockHorizontal.FACING, HORIZONTAL_FACINGS[random.nextInt(HORIZONTAL_FACINGS.length)]);
+            }
+            world.setBlockState(placePos, state, 2);
+        }
     }
 
     private static void generateDeadLeafPiles(Random random, int chunkX, int chunkZ, World world, int dimID) {

@@ -290,7 +290,7 @@ public final class Config {
             "japanese_orchid", "kovan", "lazarus_bell_flower", "lollipop_flower", "magenta_amaranth", "magenta_celosia",
             "magenta_tulip", "orange_amaranth", "orange_celosia", "orange_daisy", "osiria_rose", "peach_leather_flower",
             "pink_allium", "pink_allium_bush", "pink_anemone", "pink_daffodil", "pink_orchid", "protea_flower",
-            "purple_amaranth", "purple_celosia", "purple_orchid", "purple_age", "purple_tulip", "red_celosia",
+            "purple_amaranth", "purple_celosia", "purple_orchid", "purple_sage", "purple_tulip", "red_celosia",
             "red_corn_flower", "red_orchid", "richea", "rose", "sacred_datura", "silver_vase_flower",
             "snowdrops", "torch_ginger", "violet_leather_flower", "white_anemone", "white_celosia", "white_sage",
             "winter_cyclamen", "winter_rose", "winter_scilla", "winter_succulent", "yellow_celosia", "yellow_daffodil",
@@ -960,6 +960,11 @@ public final class Config {
         return blockSettings.leafDecayRange;
     }
 
+    public static double saplingBonemealChanceMultiplier() {
+        ensureBaked();
+        return blockSettings.saplingBonemealChanceMultiplier;
+    }
+
 
     public static boolean generateRockySurfaceFeatures() {
         ensureBaked();
@@ -979,7 +984,8 @@ public final class Config {
                 && !isWoodSetEnabled("cacti")) {
             return false;
         }
-        if (("algae".equals(featureName) || "dead_grass".equals(featureName) || "short_dead_grass".equals(featureName))
+        if (("algae".equals(featureName) || "dead_grass".equals(featureName) || "short_dead_grass".equals(featureName)
+                || "stone_pebbles".equals(featureName) || "stone_spike".equals(featureName))
                 && !isWoodSetEnabled("ground_cover")) {
             return false;
         }
@@ -995,6 +1001,12 @@ public final class Config {
         }
         if ("algae".equals(featureName)) {
             return worldgenSettings.generateAlgaePatches;
+        }
+        if ("stone_pebbles".equals(featureName)) {
+            return worldgenSettings.generateStonePebbles;
+        }
+        if ("stone_spike".equals(featureName)) {
+            return worldgenSettings.generateStoneSpikes;
         }
         if ("glowcane_blue".equals(featureName)) {
             return worldgenSettings.generateGlowcaneBlue;
@@ -1902,6 +1914,7 @@ public final class Config {
         public double mapleTapLogDepletionChance = 0.2D;
         public double thornblockDamage = 1.0D;
         public double thornBranchesDamage = 1.0D;
+        @net.minecraftforge.common.config.Config.Comment("Damage dealt to entities touching a Sonoran Cactus.")
         public double cactusDamage = 1.0D;
         public double damagingPlantDamage = 1.0D;
         @net.minecraftforge.common.config.Config.Comment("Horizontal movement retained while walking through mud. 1.0 disables slowdown; 0.925 is a 7.5% slowdown.")
@@ -1921,6 +1934,13 @@ public final class Config {
         })
         @net.minecraftforge.common.config.Config.RangeInt(min = 4, max = 12)
         public int leafDecayRange = 7;
+
+        @net.minecraftforge.common.config.Config.Comment({
+                "Multiplier for the chance that one bone meal makes a BYG sapling grow. Every sapling has a base chance of 0.4.",
+                "0 disables bone meal growth, 2.5 or more makes every bone meal grow the tree."
+        })
+        @net.minecraftforge.common.config.Config.RangeDouble(min = 0.0D, max = 10.0D)
+        public double saplingBonemealChanceMultiplier = 1.0D;
         public double springwaterBubbleChance = 0.4D;
         public int springwaterBubbleParticleCount = 2;
         @net.minecraftforge.common.config.Config.Comment("Whether Springwater grants Regeneration I while an entity remains in it.")
@@ -2192,6 +2212,8 @@ public final class Config {
         public boolean generateDeadGrassClusters = true;
         public boolean generateShortDeadGrassClusters = true;
         public boolean generateAlgaePatches = true;
+        public boolean generateStonePebbles = true;
+        public boolean generateStoneSpikes = true;
         public boolean generateGlowcaneBlue = true;
         public boolean generateGlowcanePink = true;
         public boolean generateGlowcanePurple = true;

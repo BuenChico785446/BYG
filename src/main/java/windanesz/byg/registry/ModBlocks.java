@@ -59,8 +59,7 @@ public final class ModBlocks {
     public static final Block aspen_bookshelf = placeholder();
     public static final Block aspen_door_bottom = placeholder();
     public static final Block aspen_fence = placeholder();
-    public static final Block aspen_gate = placeholder();
-    public static final Block aspen_gate_closed = placeholder();
+    public static final Block aspen_fence_gate = placeholder();
     public static final Block aspen_leaves = placeholder();
     public static final Block aspen_log = placeholder();
     public static final Block aspen_planks = placeholder();
@@ -73,8 +72,7 @@ public final class ModBlocks {
     public static final Block azalea = placeholder();
     public static final Block baobab_door_bottom = placeholder();
     public static final Block baobab_fence = placeholder();
-    public static final Block baobab_gate = placeholder();
-    public static final Block baobab_gate_open = placeholder();
+    public static final Block baobab_fence_gate = placeholder();
     public static final Block baobab_stairs = placeholder();
     public static final Block baobab_wall = placeholder();
     public static final Block baobab_wood = placeholder();
@@ -97,8 +95,7 @@ public final class ModBlocks {
     public static final Block blanket_weed = placeholder();
     public static final Block blue_enchanted_door_bottom = placeholder();
     public static final Block blue_enchanted_fence = placeholder();
-    public static final Block blue_enchanted_gate = placeholder();
-    public static final Block blue_enchanted_gate_closed = placeholder();
+    public static final Block blue_enchanted_fence_gate = placeholder();
     public static final Block blue_enchanted_sapling = placeholder();
     public static final Block blue_enchanted_stairs = placeholder();
     public static final Block blue_enchanted_wood = placeholder();
@@ -115,8 +112,7 @@ public final class ModBlocks {
     public static final Block cattails = placeholder();
     public static final Block cherry_door_bottom = placeholder();
     public static final Block cherry_fence = placeholder();
-    public static final Block cherry_gate = placeholder();
-    public static final Block cherry_gate_closed = placeholder();
+    public static final Block cherry_fence_gate = placeholder();
     public static final Block cherry_stairs = placeholder();
     public static final Block cherry_wood = placeholder();
     public static final Block cherry_wood_wall = placeholder();
@@ -128,8 +124,7 @@ public final class ModBlocks {
     public static final Block cherry_slab = placeholder();
     public static final Block cika_door_bottom = placeholder();
     public static final Block cika_fence = placeholder();
-    public static final Block cika_gate = placeholder();
-    public static final Block cika_gate_closed = placeholder();
+    public static final Block cika_fence_gate = placeholder();
     public static final Block cika_stairs = placeholder();
     public static final Block cika_wood = placeholder();
     public static final Block cika_wood_wall = placeholder();
@@ -148,8 +143,7 @@ public final class ModBlocks {
     public static final Block cyan_tulip = placeholder();
     public static final Block cypress_door_bottom = placeholder();
     public static final Block cypress_fence = placeholder();
-    public static final Block cypress_gate = placeholder();
-    public static final Block cypress_gate_closed = placeholder();
+    public static final Block cypress_fence_gate = placeholder();
     public static final Block cypress_stairs = placeholder();
     public static final Block cypress_wood = placeholder();
     public static final Block cypress_wood_wall = placeholder();
@@ -165,8 +159,7 @@ public final class ModBlocks {
     public static final Block dry_green_oak_sapling = placeholder();
     public static final Block ebony_door_bottom = placeholder();
     public static final Block ebony_fence = placeholder();
-    public static final Block ebony_gate = placeholder();
-    public static final Block ebony_gate_closed = placeholder();
+    public static final Block ebony_fence_gate = placeholder();
     public static final Block ebony_stairs = placeholder();
     public static final Block ebony_wood = placeholder();
     public static final Block ebony_wood_wall = placeholder();
@@ -187,8 +180,7 @@ public final class ModBlocks {
     public static final Block fairy_slipper = placeholder();
     public static final Block fir_door_bottom = placeholder();
     public static final Block fir_fence = placeholder();
-    public static final Block fir_gate = placeholder();
-    public static final Block fir_gate_closed = placeholder();
+    public static final Block fir_fence_gate = placeholder();
     public static final Block fir_stairs = placeholder();
     public static final Block fir_wood_wall = placeholder();
     public static final Block fir_bookshelf = placeholder();
@@ -203,8 +195,7 @@ public final class ModBlocks {
     public static final Block foxglove = placeholder();
     public static final Block frozen_oak_door_bottom = placeholder();
     public static final Block frozen_oak_fence = placeholder();
-    public static final Block frozen_oak_gate = placeholder();
-    public static final Block frozen_oak_gate_closed = placeholder();
+    public static final Block frozen_oak_fence_gate = placeholder();
     public static final Block frozen_oak_sapling = placeholder();
     public static final Block frozen_oak_stairs = placeholder();
     public static final Block frozen_oak_wood = placeholder();
@@ -229,8 +220,7 @@ public final class ModBlocks {
     public static final Block golden_spined_cactus = placeholder();
     public static final Block great_oak_door_bottom = placeholder();
     public static final Block great_oak_fence = placeholder();
-    public static final Block great_oak_gate = placeholder();
-    public static final Block great_oak_gate_closed = placeholder();
+    public static final Block great_oak_fence_gate = placeholder();
     public static final Block great_oak_stairs = placeholder();
     public static final Block great_oak_wood = placeholder();
     public static final Block great_oak_wood_wall = placeholder();
@@ -243,8 +233,7 @@ public final class ModBlocks {
     public static final Block green_enchanted_bookshelf = placeholder();
     public static final Block green_enchanted_door_bottom = placeholder();
     public static final Block green_enchanted_fence = placeholder();
-    public static final Block green_enchanted_gate = placeholder();
-    public static final Block green_enchanted_gate_closed = placeholder();
+    public static final Block green_enchanted_fence_gate = placeholder();
     public static final Block green_enchanted_stairs = placeholder();
     public static final Block green_enchanted_wood = placeholder();
     public static final Block green_enchanted_wood_wall = placeholder();
@@ -257,8 +246,7 @@ public final class ModBlocks {
     public static final Block hardened_dirt = placeholder();
     public static final Block hawthorn_door_bottom = placeholder();
     public static final Block hawthorn_fence = placeholder();
-    public static final Block hawthorn_gate = placeholder();
-    public static final Block hawthorn_gate_closed = placeholder();
+    public static final Block hawthorn_fence_gate = placeholder();
     public static final Block hawthorn_leaves_flowering = placeholder();
     public static final Block hawthorn_stairs = placeholder();
     public static final Block hawthorn_wood = placeholder();
@@ -272,8 +260,7 @@ public final class ModBlocks {
     public static final Block hawthorn_slab = placeholder();
     public static final Block holly_door_bottom = placeholder();
     public static final Block holly_fence = placeholder();
-    public static final Block holly_gate = placeholder();
-    public static final Block holly_gate_closed = placeholder();
+    public static final Block holly_fence_gate = placeholder();
     public static final Block holly_stairs = placeholder();
     public static final Block holly_wood = placeholder();
     public static final Block holly_wood_wall = placeholder();
@@ -289,8 +276,7 @@ public final class ModBlocks {
     public static final Block iris = placeholder();
     public static final Block ironwood_door_bottom = placeholder();
     public static final Block ironwood_fence = placeholder();
-    public static final Block ironwood_gate = placeholder();
-    public static final Block ironwood_gate_closed = placeholder();
+    public static final Block ironwood_fence_gate = placeholder();
     public static final Block ironwood_stairs = placeholder();
     public static final Block ironwood_wood = placeholder();
     public static final Block ironwood_wood_wall = placeholder();
@@ -303,8 +289,7 @@ public final class ModBlocks {
     public static final Block ivy = placeholder();
     public static final Block jacaranda_door_bottom = placeholder();
     public static final Block jacaranda_fence = placeholder();
-    public static final Block jacaranda_gate = placeholder();
-    public static final Block jacaranda_gate_closed = placeholder();
+    public static final Block jacaranda_fence_gate = placeholder();
     public static final Block jacaranda_stairs = placeholder();
     public static final Block jacaranda_wood = placeholder();
     public static final Block jacaranda_wood_wall = placeholder();
@@ -337,8 +322,7 @@ public final class ModBlocks {
     public static final Block mahogany_bookshelf = placeholder();
     public static final Block mahogany_door_bottom = placeholder();
     public static final Block mahogany_fence = placeholder();
-    public static final Block mahogany_gate = placeholder();
-    public static final Block mahogany_gate_closed = placeholder();
+    public static final Block mahogany_fence_gate = placeholder();
     public static final Block mahogany_leaves = placeholder();
     public static final Block mahogany_log = placeholder();
     public static final Block mahogany_planks = placeholder();
@@ -349,8 +333,7 @@ public final class ModBlocks {
     public static final Block mahogany_wood_wall = placeholder();
     public static final Block mangrove_door_bottom = placeholder();
     public static final Block mangrove_fence = placeholder();
-    public static final Block mangrove_gate = placeholder();
-    public static final Block mangrove_gate_closed = placeholder();
+    public static final Block mangrove_fence_gate = placeholder();
     public static final Block mangrove_stairs = placeholder();
     public static final Block mangrove_wood = placeholder();
     public static final Block mangrove_wood_wall = placeholder();
@@ -362,8 +345,7 @@ public final class ModBlocks {
     public static final Block mangrove_slab = placeholder();
     public static final Block maple_door_bottom = placeholder();
     public static final Block maple_fence = placeholder();
-    public static final Block maple_gate = placeholder();
-    public static final Block maple_gate_closed = placeholder();
+    public static final Block maple_fence_gate = placeholder();
     public static final Block maple_stairs = placeholder();
     public static final Block maple_wood = placeholder();
     public static final Block maple_wood_wall = placeholder();
@@ -405,8 +387,7 @@ public final class ModBlocks {
     public static final Block palm_bookshelf = placeholder();
     public static final Block palm_door_bottom = placeholder();
     public static final Block palm_fence = placeholder();
-    public static final Block palm_gate = placeholder();
-    public static final Block palm_gate_closed = placeholder();
+    public static final Block palm_fence_gate = placeholder();
     public static final Block palm_leaves = placeholder();
     public static final Block palm_log = placeholder();
     public static final Block palm_planks = placeholder();
@@ -430,8 +411,7 @@ public final class ModBlocks {
     public static final Block pendorite_ore = placeholder();
     public static final Block pine_door_bottom = placeholder();
     public static final Block pine_fence = placeholder();
-    public static final Block pine_gate = placeholder();
-    public static final Block pine_gate_closed = placeholder();
+    public static final Block pine_fence_gate = placeholder();
     public static final Block pine_stairs = placeholder();
     public static final Block pine_wood = placeholder();
     public static final Block pine_wood_wall = placeholder();
@@ -476,11 +456,10 @@ public final class ModBlocks {
     public static final Block purple_smooth_sandstone = placeholder();
     public static final Block purple_celosia = placeholder();
     public static final Block purple_orchid = placeholder();
-    public static final Block purple_age = placeholder();
+    public static final Block purple_sage = placeholder();
     public static final Block purple_tulip = placeholder();
     public static final Block rainbow_eucalyptus_fence = placeholder();
-    public static final Block rainbow_eucalyptus_gate = placeholder();
-    public static final Block rainbow_eucalyptus_gate_closed = placeholder();
+    public static final Block rainbow_eucalyptus_fence_gate = placeholder();
     public static final Block rainbow_eucalyptus_stairs = placeholder();
     public static final Block rainbow_eucalyptus_wood = placeholder();
     public static final Block rainbow_eucalyptus_wood_wall = placeholder();
@@ -502,8 +481,7 @@ public final class ModBlocks {
     public static final Block red_orchid = placeholder();
     public static final Block red_spruce_sapling = placeholder();
     public static final Block redwood_fence = placeholder();
-    public static final Block redwood_gate = placeholder();
-    public static final Block redwood_gate_closed = placeholder();
+    public static final Block redwood_fence_gate = placeholder();
     public static final Block redwood_stairs = placeholder();
     public static final Block redwood_wood = placeholder();
     public static final Block redwood_wood_wall = placeholder();
@@ -521,8 +499,7 @@ public final class ModBlocks {
     public static final Block rose = placeholder();
     public static final Block rowan_door_bottom = placeholder();
     public static final Block rowan_fence = placeholder();
-    public static final Block rowan_gate = placeholder();
-    public static final Block rowan_gate_closed = placeholder();
+    public static final Block rowan_fence_gate = placeholder();
     public static final Block rowan_stairs = placeholder();
     public static final Block rowan_wood = placeholder();
     public static final Block rowan_berry_leaves = placeholder();
@@ -556,8 +533,7 @@ public final class ModBlocks {
     public static final Block silver_maple_sapling = placeholder();
     public static final Block skyris_door_bottom = placeholder();
     public static final Block skyris_fence = placeholder();
-    public static final Block skyris_gate = placeholder();
-    public static final Block skyris_gate_closed = placeholder();
+    public static final Block skyris_fence_gate = placeholder();
     public static final Block skyris_stairs = placeholder();
     public static final Block skyris_wood = placeholder();
     public static final Block skyris_wood_wall = placeholder();
@@ -666,8 +642,7 @@ public final class ModBlocks {
     public static final Block wild_strawberry = placeholder();
     public static final Block willow_door_bottom = placeholder();
     public static final Block willow_fence = placeholder();
-    public static final Block willow_gate = placeholder();
-    public static final Block willow_gate_open = placeholder();
+    public static final Block willow_fence_gate = placeholder();
     public static final Block willow_stairs = placeholder();
     public static final Block willow_wood = placeholder();
     public static final Block willow_wood_wall = placeholder();
@@ -683,8 +658,7 @@ public final class ModBlocks {
     public static final Block winter_scilla = placeholder();
     public static final Block witch_hazel_door = placeholder();
     public static final Block witch_hazel_fence = placeholder();
-    public static final Block witch_hazel_gate = placeholder();
-    public static final Block witch_hazel_gate_closed = placeholder();
+    public static final Block witch_hazel_fence_gate = placeholder();
     public static final Block witch_hazel_stairs = placeholder();
     public static final Block witch_hazel_wood = placeholder();
     public static final Block witch_hazel_wood_wall = placeholder();
@@ -704,8 +678,7 @@ public final class ModBlocks {
     public static final Block yellow_tulip = placeholder();
     public static final Block zelkova_door_bottom = placeholder();
     public static final Block zelkova_fence = placeholder();
-    public static final Block zelkova_gate = placeholder();
-    public static final Block zelkova_gate_closed = placeholder();
+    public static final Block zelkova_fence_gate = placeholder();
     public static final Block zelkova_stairs = placeholder();
     public static final Block zelkova_wood = placeholder();
     public static final Block zelkova_wood_wall = placeholder();
@@ -762,6 +735,7 @@ public final class ModBlocks {
     }
 
     private static final ResourceLocation REMOVED_ROCKY_GRASS_ALPS = new ResourceLocation(BiomesYouGo.MODID, "rocky_grass_alps");
+    private static final ResourceLocation RENAMED_PURPLE_SAGE = new ResourceLocation(BiomesYouGo.MODID, "purple_age");
 
     /** Remaps the removed Rocky Grass (Alps) block in old saves to regular Rocky Grass. */
     @SubscribeEvent
@@ -769,6 +743,8 @@ public final class ModBlocks {
         for (RegistryEvent.MissingMappings.Mapping<Block> mapping : event.getMappings()) {
             if (REMOVED_ROCKY_GRASS_ALPS.equals(mapping.key) && rocky_grass != null) {
                 mapping.remap(rocky_grass);
+            } else if (RENAMED_PURPLE_SAGE.equals(mapping.key) && purple_sage != null) {
+                mapping.remap(purple_sage);
             }
         }
     }
@@ -778,6 +754,11 @@ public final class ModBlocks {
         for (RegistryEvent.MissingMappings.Mapping<Item> mapping : event.getMappings()) {
             if (REMOVED_ROCKY_GRASS_ALPS.equals(mapping.key)) {
                 Item item = Item.getItemFromBlock(rocky_grass);
+                if (item != Items.AIR) {
+                    mapping.remap(item);
+                }
+            } else if (RENAMED_PURPLE_SAGE.equals(mapping.key)) {
+                Item item = Item.getItemFromBlock(purple_sage);
                 if (item != Items.AIR) {
                     mapping.remap(item);
                 }
@@ -801,9 +782,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("aspen_fence", 0, 2.0f, 10.0f, false));
 
-        registerBlock(registry, new BlockFenceGateBase("aspen_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.aspen_gate_closed, () -> ModBlocks.aspen_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("aspen_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.aspen_gate, () -> ModBlocks.aspen_gate_closed));
+        registerBlock(registry, new BlockFenceGateBase("aspen_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockShearableLeavesBase("aspen_leaves", 0, () -> ModBlocks.aspen_leaves,
                 () -> new ItemStack(ModBlocks.aspen_sapling, 1), 0.03, 1));
@@ -831,9 +810,7 @@ public final class ModBlocks {
 
             registerBlock(registry, new BlockFenceBase("baobab_fence", 0, 2.0f, 8.0f, true));
 
-            registerBlock(registry, new BlockFenceGateBase("baobab_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.baobab_gate_open, () -> ModBlocks.baobab_gate));
-
-            registerBlock(registry, new BlockFenceGateBase("baobab_gate_open", true, 1, 1.0f, 10.0f, () -> ModBlocks.baobab_gate, () -> ModBlocks.baobab_gate));
+            registerBlock(registry, new BlockFenceGateBase("baobab_fence_gate", 1, 1.0f, 10.0f));
 
             registerBlock(registry, new BlockStairsBase("baobab_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 2.0f, 8.0f, true));
 
@@ -889,9 +866,7 @@ public final class ModBlocks {
 
             registerBlock(registry, new BlockFenceBase("blue_enchanted_fence", 0, 2.0f, 10.0f, false));
 
-            registerBlock(registry, new BlockFenceGateBase("blue_enchanted_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.blue_enchanted_gate_closed, () -> ModBlocks.blue_enchanted_gate));
-
-            registerBlock(registry, new BlockFenceGateBase("blue_enchanted_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.blue_enchanted_gate, () -> ModBlocks.blue_enchanted_gate));
+            registerBlock(registry, new BlockFenceGateBase("blue_enchanted_fence_gate", 1, 1.0f, 10.0f));
 
             registerBlock(registry, createGeneratedSapling("blue_enchanted_sapling", new BlockGeneratedSaplingBase.TreePlacement[]{
                     BlockGeneratedSaplingBase.tree(BygTrees.BLUE_ENCHANTED_STEPPED, 0.35),
@@ -932,9 +907,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("cherry_fence", 0, 2.0f, 10.0f, false));
 
-        registerBlock(registry, new BlockFenceGateBase("cherry_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.cherry_gate_closed, () -> ModBlocks.cherry_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("cherry_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.cherry_gate, () -> ModBlocks.cherry_gate));
+        registerBlock(registry, new BlockFenceGateBase("cherry_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockStairsBase("cherry_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 2.0f, 10.0f, true));
 
@@ -958,9 +931,7 @@ public final class ModBlocks {
 
             registerBlock(registry, new BlockFenceBase("cika_fence", 0, 2.0f, 10.0f, false));
 
-            registerBlock(registry, new BlockFenceGateBase("cika_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.cika_gate_closed, () -> ModBlocks.cika_gate));
-
-            registerBlock(registry, new BlockFenceGateBase("cika_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.cika_gate, () -> ModBlocks.cika_gate));
+            registerBlock(registry, new BlockFenceGateBase("cika_fence_gate", 1, 1.0f, 10.0f));
 
             registerBlock(registry, new BlockStairsBase("cika_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 2.0f, 10.0f, true));
 
@@ -1004,9 +975,7 @@ public final class ModBlocks {
 
             registerBlock(registry, new BlockFenceBase("cypress_fence", 0, 2.0f, 10.0f, true));
 
-            registerBlock(registry, new BlockFenceGateBase("cypress_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.cypress_gate_closed, () -> ModBlocks.cypress_gate));
-
-            registerBlock(registry, new BlockFenceGateBase("cypress_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.cypress_gate, () -> ModBlocks.cypress_gate));
+            registerBlock(registry, new BlockFenceGateBase("cypress_fence_gate", 1, 1.0f, 10.0f));
 
             registerBlock(registry, new BlockStairsBase("cypress_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 2.0f, 10.0f, true));
 
@@ -1030,8 +999,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockSimpleFlowerBase("daffodil", BYGTab.tab, 0.0f));
 
-        registerBlock(registry, createStackingPlantBlock("dead_grass", BYGTab.tab, 0.0f, EnumPlantType.Desert, 1, true, true, false, false,
-                () -> new ItemStack(Blocks.AIR, 1)));
+        registerBlock(registry, createDeadGrassBlock("dead_grass"));
 
         registerBlock(registry, new BlockSimpleFlowerBase("delphinium", BYGTab.tab, 0.0f));
 
@@ -1047,9 +1015,7 @@ public final class ModBlocks {
 
             registerBlock(registry, new BlockFenceBase("ebony_fence", 1, 2.0f, 8.0f, true));
 
-            registerBlock(registry, new BlockFenceGateBase("ebony_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.ebony_gate_closed, () -> ModBlocks.ebony_gate));
-
-            registerBlock(registry, new BlockFenceGateBase("ebony_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.ebony_gate, () -> ModBlocks.ebony_gate));
+            registerBlock(registry, new BlockFenceGateBase("ebony_fence_gate", 1, 1.0f, 10.0f));
 
             registerBlock(registry, new BlockStairsBase("ebony_stairs", Material.WOOD, SoundType.WOOD, "axe", 1, 2.0f, 8.0f, true));
 
@@ -1093,9 +1059,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("fir_fence", 1, 2.0f, 8.0f, true));
 
-        registerBlock(registry, new BlockFenceGateBase("fir_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.fir_gate_closed, () -> ModBlocks.fir_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("fir_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.fir_gate, () -> ModBlocks.fir_gate));
+        registerBlock(registry, new BlockFenceGateBase("fir_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockStairsBase("fir_stairs", Material.WOOD, SoundType.GROUND, "axe", 1, 2.0f, 8.0f, true));
 
@@ -1125,9 +1089,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("frozen_oak_fence", 0, 2.0f, 10.0f, false));
 
-        registerBlock(registry, new BlockFenceGateBase("frozen_oak_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.frozen_oak_gate_closed, () -> ModBlocks.frozen_oak_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("frozen_oak_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.frozen_oak_gate, () -> ModBlocks.frozen_oak_gate));
+        registerBlock(registry, new BlockFenceGateBase("frozen_oak_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, createGeneratedSapling("frozen_oak_sapling", new BlockGeneratedSaplingBase.TreePlacement[]{
                 BlockGeneratedSaplingBase.tree(new FrozenOakTreeGenerator(), 1.0)}, 0.4, BlockGeneratedSaplingBase.outsideScaledTemperatureRange(-0.5, 0.35)));
@@ -1195,9 +1157,7 @@ public final class ModBlocks {
 
             registerBlock(registry, new BlockFenceBase("great_oak_fence", 0, 2.0f, 10.0f, false));
 
-            registerBlock(registry, new BlockFenceGateBase("great_oak_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.great_oak_gate_closed, () -> ModBlocks.great_oak_gate));
-
-            registerBlock(registry, new BlockFenceGateBase("great_oak_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.great_oak_gate, () -> ModBlocks.great_oak_gate));
+            registerBlock(registry, new BlockFenceGateBase("great_oak_fence_gate", 1, 1.0f, 10.0f));
 
             registerBlock(registry, new BlockStairsBase("great_oak_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 2.0f, 10.0f, true));
 
@@ -1227,9 +1187,7 @@ public final class ModBlocks {
 
             registerBlock(registry, new BlockFenceBase("green_enchanted_fence", 1, 2.0f, 8.0f, true));
 
-            registerBlock(registry, new BlockFenceGateBase("green_enchanted_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.green_enchanted_gate_closed, () -> ModBlocks.green_enchanted_gate));
-
-            registerBlock(registry, new BlockFenceGateBase("green_enchanted_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.green_enchanted_gate, () -> ModBlocks.green_enchanted_gate));
+            registerBlock(registry, new BlockFenceGateBase("green_enchanted_fence_gate", 1, 1.0f, 10.0f));
 
             registerBlock(registry, new BlockStairsBase("green_enchanted_stairs", Material.WOOD, SoundType.WOOD, "axe", 1, 2.0f, 8.0f, true));
 
@@ -1255,9 +1213,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("hawthorn_fence", 1, 2.0f, 8.0f, true));
 
-        registerBlock(registry, new BlockFenceGateBase("hawthorn_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.hawthorn_gate_closed, () -> ModBlocks.hawthorn_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("hawthorn_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.hawthorn_gate, () -> ModBlocks.hawthorn_gate));
+        registerBlock(registry, new BlockFenceGateBase("hawthorn_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockShearableLeavesBase("hawthorn_leaves_flowering", 1, () -> ModBlocks.hawthorn_leaves, () -> new ItemStack(ModBlocks.hawthorn_sapling, 1), 0.03, 1));
 
@@ -1285,9 +1241,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("holly_fence", 1, 2.0f, 8.0f, true));
 
-        registerBlock(registry, new BlockFenceGateBase("holly_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.holly_gate_closed, () -> ModBlocks.holly_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("holly_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.holly_gate, () -> ModBlocks.holly_gate));
+        registerBlock(registry, new BlockFenceGateBase("holly_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockStairsBase("holly_stairs", Material.WOOD, SoundType.WOOD, "axe", 1, 2.0f, 8.0f, true));
 
@@ -1320,9 +1274,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("ironwood_fence", 1, 2.0f, 8.0f, true));
 
-        registerBlock(registry, new BlockFenceGateBase("ironwood_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.ironwood_gate_closed, () -> ModBlocks.ironwood_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("ironwood_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.ironwood_gate, () -> ModBlocks.ironwood_gate));
+        registerBlock(registry, new BlockFenceGateBase("ironwood_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockStairsBase("ironwood_stairs", Material.WOOD, SoundType.WOOD, "axe", 1, 2.0f, 8.0f, true));
 
@@ -1348,9 +1300,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("jacaranda_fence", 0, 2.0f, 10.0f, false));
 
-        registerBlock(registry, new BlockFenceGateBase("jacaranda_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.jacaranda_gate_closed, () -> ModBlocks.jacaranda_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("jacaranda_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.jacaranda_gate, () -> ModBlocks.jacaranda_gate));
+        registerBlock(registry, new BlockFenceGateBase("jacaranda_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockStairsBase("jacaranda_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 2.0f, 10.0f, true));
 
@@ -1424,9 +1374,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("mahogany_fence", 0, 2.0f, 10.0f, false));
 
-        registerBlock(registry, new BlockFenceGateBase("mahogany_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.mahogany_gate_closed, () -> ModBlocks.mahogany_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("mahogany_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.mahogany_gate, () -> ModBlocks.mahogany_gate));
+        registerBlock(registry, new BlockFenceGateBase("mahogany_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockShearableLeavesBase("mahogany_leaves", 0, () -> ModBlocks.mahogany_leaves, () -> new ItemStack(ModBlocks.mahogany_sapling, 1), 0.03, 1));
 
@@ -1448,9 +1396,7 @@ public final class ModBlocks {
 
             registerBlock(registry, new BlockFenceBase("mangrove_fence", 0, 2.0f, 10.0f, false));
 
-            registerBlock(registry, new BlockFenceGateBase("mangrove_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.mangrove_gate_closed, () -> ModBlocks.mangrove_gate));
-
-            registerBlock(registry, new BlockFenceGateBase("mangrove_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.mangrove_gate, () -> ModBlocks.mangrove_gate));
+            registerBlock(registry, new BlockFenceGateBase("mangrove_fence_gate", 1, 1.0f, 10.0f));
 
             registerBlock(registry, new BlockStairsBase("mangrove_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 2.0f, 10.0f, true));
 
@@ -1478,9 +1424,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("maple_fence", 0, 2.0f, 10.0f, false));
 
-        registerBlock(registry, new BlockFenceGateBase("maple_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.maple_gate_closed, () -> ModBlocks.maple_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("maple_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.maple_gate, () -> ModBlocks.maple_gate));
+        registerBlock(registry, new BlockFenceGateBase("maple_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockStairsBase("maple_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 2.0f, 10.0f, true));
 
@@ -1603,9 +1547,7 @@ public final class ModBlocks {
 
             registerBlock(registry, new BlockFenceBase("palm_fence", 0, 2.0f, 10.0f, false));
 
-            registerBlock(registry, new BlockFenceGateBase("palm_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.palm_gate_closed, () -> ModBlocks.palm_gate));
-
-            registerBlock(registry, new BlockFenceGateBase("palm_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.palm_gate, () -> ModBlocks.palm_gate));
+            registerBlock(registry, new BlockFenceGateBase("palm_fence_gate", 1, 1.0f, 10.0f));
 
             registerBlock(registry, new BlockShearableLeavesBase("palm_leaves", 0, () -> ModBlocks.palm_leaves, () -> new ItemStack(ModBlocks.palm_sapling, 1), 0.03, 1));
 
@@ -1685,9 +1627,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("pine_fence", 0, 2.0f, 10.0f, false));
 
-        registerBlock(registry, new BlockFenceGateBase("pine_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.pine_gate_closed, () -> ModBlocks.pine_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("pine_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.pine_gate, () -> ModBlocks.pine_gate));
+        registerBlock(registry, new BlockFenceGateBase("pine_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockStairsBase("pine_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 2.0f, 10.0f, true));
 
@@ -1757,8 +1697,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockStoneWallBase("polished_sodalite_walls", 1, 1.5f, 30.0f, true));
 
-        registerBlock(registry, new BlockConfiguredFlower("prairie_grass", BYGTab.tab, false, false,
-                () -> new ItemStack(Blocks.AIR, 1), null));
+        registerBlock(registry, new BlockShearableGrass("prairie_grass", BYGTab.tab, false, false));
 
         registerBlock(registry, new BlockTallPrairieGrass());
 
@@ -1794,15 +1733,13 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockSimpleFlowerBase("purple_orchid", BYGTab.tab, 0.0f));
 
-        registerBlock(registry, new BlockSimpleFlowerBase("purple_age", BYGTab.tab, 0.0f));
+        registerBlock(registry, new BlockSimpleFlowerBase("purple_sage", BYGTab.tab, 0.0f));
 
         registerBlock(registry, new BlockSimpleFlowerBase("purple_tulip", BYGTab.tab, 0.0f));
 
         registerBlock(registry, new BlockFenceBase("rainbow_eucalyptus_fence", 0, 2.0f, 8.0f, true));
 
-        registerBlock(registry, new BlockFenceGateBase("rainbow_eucalyptus_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.rainbow_eucalyptus_gate_closed, () -> ModBlocks.rainbow_eucalyptus_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("rainbow_eucalyptus_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.rainbow_eucalyptus_gate, () -> ModBlocks.rainbow_eucalyptus_gate));
+        registerBlock(registry, new BlockFenceGateBase("rainbow_eucalyptus_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockStairsBase("rainbow_eucalyptus_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 2.0f, 8.0f, true));
 
@@ -1857,9 +1794,7 @@ public final class ModBlocks {
         if (Config.isRedwoodContentEnabled()) {
             registerBlock(registry, new BlockFenceBase("redwood_fence", 0, 2.0f, 8.0f, false));
 
-            registerBlock(registry, new BlockFenceGateBase("redwood_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.redwood_gate_closed, () -> ModBlocks.redwood_gate));
-
-            registerBlock(registry, new BlockFenceGateBase("redwood_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.redwood_gate, () -> ModBlocks.redwood_gate));
+            registerBlock(registry, new BlockFenceGateBase("redwood_fence_gate", 1, 1.0f, 10.0f));
 
             registerBlock(registry, new BlockStairsBase("redwood_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 2.0f, 8.0f, true));
 
@@ -1899,9 +1834,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("rowan_fence", 1, 2.0f, 8.0f, true));
 
-        registerBlock(registry, new BlockFenceGateBase("rowan_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.rowan_gate_closed, () -> ModBlocks.rowan_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("rowan_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.rowan_gate, () -> ModBlocks.rowan_gate));
+        registerBlock(registry, new BlockFenceGateBase("rowan_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockStairsBase("rowan_stairs", Material.WOOD, SoundType.WOOD, "axe", 1, 2.0f, 8.0f, true));
 
@@ -1964,8 +1897,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockShelfFungi());
 
-        registerBlock(registry, createStackingPlantBlock("short_dead_grass", BYGTab.tab, 0.0f, EnumPlantType.Desert, 1, true, true, false, false,
-                () -> new ItemStack(Blocks.AIR, 1)));
+        registerBlock(registry, createDeadGrassBlock("short_dead_grass"));
 
         if (Config.isSkyrisContentEnabled()) {
             registerBlock(registry, new BlockFruitLeavesBase("silver_apple_white_skyris_leaves", 0, () -> new ItemStack(ModItems.silver_apple, 1)));
@@ -1984,9 +1916,7 @@ public final class ModBlocks {
 
             registerBlock(registry, new BlockFenceBase("skyris_fence", 0, 2.0f, 10.0f, false));
 
-            registerBlock(registry, new BlockFenceGateBase("skyris_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.skyris_gate_closed, () -> ModBlocks.skyris_gate));
-
-            registerBlock(registry, new BlockFenceGateBase("skyris_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.skyris_gate, () -> ModBlocks.skyris_gate));
+            registerBlock(registry, new BlockFenceGateBase("skyris_fence_gate", 1, 1.0f, 10.0f));
 
             registerBlock(registry, new BlockStairsBase("skyris_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 2.0f, 10.0f, true));
 
@@ -2042,9 +1972,9 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockBasicBase("sodalite_tile", Material.ROCK, SoundType.STONE, "pickaxe", 1, 1.5f, 30.0f, 0.0f, 255, false));
 
-        registerBlock(registry, createCactusBlock("sonoran_cactus"));
+        registerBlock(registry, new BlockSonoranCactus("sonoran_cactus"));
 
-        registerBlock(registry, createCactusBlock("sonoran_cactus_flowering"));
+        registerBlock(registry, new BlockSonoranCactus("sonoran_cactus_flowering"));
 
         registerBlock(registry, new BlockSpringwater());
 
@@ -2232,9 +2162,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("willow_fence", 0, 2.0f, 10.0f, false));
 
-        registerBlock(registry, new BlockFenceGateBase("willow_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.willow_gate_open, () -> ModBlocks.willow_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("willow_gate_open", true, 1, 1.0f, 10.0f, () -> ModBlocks.willow_gate, () -> ModBlocks.willow_gate));
+        registerBlock(registry, new BlockFenceGateBase("willow_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockStairsBase("willow_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 2.0f, 10.0f, true));
 
@@ -2268,9 +2196,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("witch_hazel_fence", 1, 2.0f, 8.0f, true));
 
-        registerBlock(registry, new BlockFenceGateBase("witch_hazel_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.witch_hazel_gate_closed, () -> ModBlocks.witch_hazel_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("witch_hazel_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.witch_hazel_gate, () -> ModBlocks.witch_hazel_gate));
+        registerBlock(registry, new BlockFenceGateBase("witch_hazel_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockStairsBase("witch_hazel_stairs", Material.WOOD, SoundType.WOOD, "axe", 1, 2.0f, 8.0f, true));
 
@@ -2314,9 +2240,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockFenceBase("zelkova_fence", 0, 1.0f, 10.0f, false));
 
-        registerBlock(registry, new BlockFenceGateBase("zelkova_gate", false, 1, 1.0f, 10.0f, () -> ModBlocks.zelkova_gate_closed, () -> ModBlocks.zelkova_gate));
-
-        registerBlock(registry, new BlockFenceGateBase("zelkova_gate_closed", true, 1, 1.0f, 10.0f, () -> ModBlocks.zelkova_gate, () -> ModBlocks.zelkova_gate));
+        registerBlock(registry, new BlockFenceGateBase("zelkova_fence_gate", 1, 1.0f, 10.0f));
 
         registerBlock(registry, new BlockStairsBase("zelkova_stairs", Material.WOOD, SoundType.WOOD, "axe", 0, 1.0f, 10.0f, true));
 
@@ -3063,115 +2987,15 @@ public final class ModBlocks {
         };
     }
 
-    private static Block createCactusBlock(String name) {
-        return new BlockBasicBase(name, Material.CACTUS, SoundType.CLOTH, "axe", 0, 1.0f, 10.0f, 0.0f, 255, true) {
-            @Override
-            public boolean isFlammable(IBlockAccess blockAccess, BlockPos pos, EnumFacing face) {
-                return true;
-            }
-
-            @Override
-            public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer entity, boolean willHarvest) {
-                boolean removed = super.removedByPlayer(state, world, pos, entity, willHarvest);
-                if (entity != null && !world.isRemote) {
-                    entity.attackEntityFrom(DamageSource.GENERIC, Config.getCactusDamage());
-                }
-                return removed;
-            }
-        };
-    }
-
     private static Block createStackingPlantBlock(String name, @Nullable CreativeTabs tab, float lightLevel, EnumPlantType plantType, int maxHeight,
                                                   boolean flammable, boolean replaceable, boolean caveLightBreak, boolean damagesEntities,
                                                   Supplier<ItemStack> dropSupplier) {
-        return new net.minecraft.block.BlockReed() {
-            {
-                this.setSoundType(SoundType.PLANT);
-                this.setCreativeTab(tab);
-                this.setHardness(0.01f);
-                this.setResistance(2.0f);
-                this.setLightLevel(lightLevel);
-                this.setTranslationKey(name);
-                this.setRegistryName(name);
-            }
+        return new BlockStackingPlantBase(name, tab, lightLevel, plantType, maxHeight, flammable, replaceable, caveLightBreak, damagesEntities,
+                dropSupplier, false);
+    }
 
-            @Override
-            public boolean isFlammable(IBlockAccess blockAccess, BlockPos pos, EnumFacing face) {
-                return flammable;
-            }
-
-            @Override
-            public boolean isReplaceable(IBlockAccess blockAccess, BlockPos pos) {
-                return replaceable || super.isReplaceable(blockAccess, pos);
-            }
-
-            @Override
-            public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-                return new ItemStack(Item.getItemFromBlock(this), 1, this.damageDropped(state));
-            }
-
-            @Override
-            public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
-                return plantType;
-            }
-
-            @Override
-            public boolean canPlaceBlockAt(World world, BlockPos pos) {
-                Block blockBelow = world.getBlockState(pos.down()).getBlock();
-                return blockBelow.canSustainPlant(world.getBlockState(pos.down()), world, pos.down(), EnumFacing.UP, this) || blockBelow == this;
-            }
-
-            @Override
-            public net.minecraft.util.math.AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-                if ("short_dead_grass".equals(name)) {
-                    // texture only fills the lower 9/16 of the block
-                    return new net.minecraft.util.math.AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.5625D, 0.9D);
-                }
-                return super.getBoundingBox(state, source, pos);
-            }
-
-            @SideOnly(Side.CLIENT)
-            public int colorMultiplier(IBlockAccess access, BlockPos pos, int pass) {
-                return 0xFFFFFF;
-            }
-
-            @Override
-            public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
-                if (caveLightBreak && world.getLightFromNeighbors(pos) >= 13) {
-                    this.dropBlockAsItem(world, pos, state, 1);
-                    world.setBlockToAir(pos);
-                    return;
-                }
-                if ((world.getBlockState(pos.down()).getBlock() == this || this.checkForDrop(world, pos, state)) && world.isAirBlock(pos.up())) {
-                    int height = 1;
-                    while (world.getBlockState(pos.down(height)).getBlock() == this) {
-                        ++height;
-                    }
-                    if (height < maxHeight) {
-                        int age = state.getValue(AGE);
-                        if (age == 15) {
-                            world.setBlockState(pos.up(), this.getDefaultState());
-                            world.setBlockState(pos, state.withProperty(AGE, 0), 4);
-                        } else {
-                            world.setBlockState(pos, state.withProperty(AGE, age + 1), 4);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-                super.onEntityCollision(world, pos, state, entity);
-                if (damagesEntities) {
-                    entity.attackEntityFrom(DamageSource.GENERIC, Config.getDamagingPlantDamage());
-                }
-            }
-
-            @Override
-            public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-                drops.add(dropSupplier.get());
-            }
-        };
+    private static Block createDeadGrassBlock(String name) {
+        return new BlockStackingPlantBase(name, BYGTab.tab, 0.0f, EnumPlantType.Desert, 1, true, true, false, false, () -> ItemStack.EMPTY, true);
     }
 
     private static void registerBlock(IForgeRegistry<Block> registry, Block block) {

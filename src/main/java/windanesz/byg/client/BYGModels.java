@@ -1,6 +1,8 @@
 package windanesz.byg.client;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCactus;
+import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -16,6 +18,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import windanesz.byg.BiomesYouGo;
 import windanesz.byg.blocks.BlockAlgae;
 import windanesz.byg.blocks.BlockBygLeaves;
+import windanesz.byg.blocks.BlockFenceGateBase;
+import windanesz.byg.blocks.BlockSonoranCactus;
 import windanesz.byg.blocks.BlockGeneratedSaplingBase;
 import windanesz.byg.items.ItemBiomeTeleporter;
 import windanesz.byg.registry.ModBlocks;
@@ -30,6 +34,9 @@ public final class BYGModels {
     // BYG saplings inherit vanilla's tree "type" property, but it is never used (metadata is fixed to 0), so the
     // renderer must ignore it or it would look for blockstate variants for spruce, birch, etc.
     private static final StateMap SAPLING_TYPE_STATE_MAP = new StateMap.Builder().ignore(BlockSapling.TYPE).build();
+
+    private static final StateMap FENCE_GATE_STATE_MAP = new StateMap.Builder().ignore(BlockFenceGate.POWERED).build();
+    private static final StateMap CACTUS_STATE_MAP = new StateMap.Builder().ignore(BlockCactus.AGE).build();
 
     private BYGModels() {
     }
@@ -47,6 +54,10 @@ public final class BYGModels {
                 ModelLoader.setCustomStateMapper(block, LEAF_DECAY_STATE_MAP);
             } else if (block instanceof BlockGeneratedSaplingBase) {
                 ModelLoader.setCustomStateMapper(block, SAPLING_TYPE_STATE_MAP);
+            } else if (block instanceof BlockFenceGateBase) {
+                ModelLoader.setCustomStateMapper(block, FENCE_GATE_STATE_MAP);
+            } else if (block instanceof BlockSonoranCactus) {
+                ModelLoader.setCustomStateMapper(block, CACTUS_STATE_MAP);
             }
         }
     }

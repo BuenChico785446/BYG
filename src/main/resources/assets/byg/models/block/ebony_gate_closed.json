@@ -1,8 +1,0 @@
-{
-  "parent": "byg:gate_open",
-  "textures": {
-    "all": "byg:blocks/ebony_planks",
-    "particle": "byg:blocks/ebony_planks",
-    "aspen_planks": "byg:blocks/ebony_planks"
-  }
-}

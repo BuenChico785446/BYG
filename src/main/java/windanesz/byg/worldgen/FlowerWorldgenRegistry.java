@@ -67,7 +67,7 @@ public final class FlowerWorldgenRegistry {
             config(() -> (BlockFlower) ModBlocks.purple_celosia, 2, "byg:byg_weeping_witch_forest"),
             config(() -> (BlockFlower) ModBlocks.purple_orchid, 2, "swampland", "byg:byg_bayou", "byg:byg_glowshroom_bayou", "byg:byg_mangrove_marshes"),
             config(() -> (BlockFlower) ModBlocks.purple_orchid, 1, "byg:byg_marshlands"),
-            config(() -> (BlockFlower) ModBlocks.purple_age, 2, "byg:byg_great_oak_lowlands", "byg:byg_boreal_forest", "byg:byg_orchard", "byg:byg_pine_mountains", "byg:byg_grassland_plateau", "byg:byg_seasonal_deciduous", "byg:byg_chaparral_lowlands", "byg:byg_deciduous_forest", "byg:byg_snowy_pine_mountains", "byg:byg_seasonal_birch_forest", "byg:byg_great_lakes", "byg:byg_aspen_forest", "byg:byg_pine_lowlands"),
+            config(() -> (BlockFlower) ModBlocks.purple_sage, 2, "byg:byg_great_oak_lowlands", "byg:byg_boreal_forest", "byg:byg_orchard", "byg:byg_pine_mountains", "byg:byg_grassland_plateau", "byg:byg_seasonal_deciduous", "byg:byg_chaparral_lowlands", "byg:byg_deciduous_forest", "byg:byg_snowy_pine_mountains", "byg:byg_seasonal_birch_forest", "byg:byg_great_lakes", "byg:byg_aspen_forest", "byg:byg_pine_lowlands"),
             config(() -> (BlockFlower) ModBlocks.purple_tulip, 40, "byg:byg_flowering_plains"),
             config(() -> (BlockFlower) ModBlocks.red_celosia, 1, "byg:byg_cika_forest"),
             config(() -> (BlockFlower) ModBlocks.red_corn_flower, 2, "byg:byg_grassland_plateau", "plains", "byg:byg_prairie"),

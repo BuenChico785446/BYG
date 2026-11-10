@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import windanesz.byg.Config;
 import windanesz.byg.client.BYGTab;
 import windanesz.byg.worldgen.treegenerator.TreeGrowthGenerator;
 
@@ -27,6 +28,7 @@ public class BlockGeneratedSaplingBase extends BlockSapling {
     private final BiPredicate<World, BlockPos> tickGrowthCondition;
     private final BiPredicate<World, BlockPos> bonemealGrowthCondition;
     private final SaplingFormation formation;
+    private final double bonemealSuccessChance;
 
     public BlockGeneratedSaplingBase(String name, TreePlacement[] placements, double bonemealSuccessChance,
                                      BiPredicate<World, BlockPos> growthCondition) {
@@ -48,6 +50,7 @@ public class BlockGeneratedSaplingBase extends BlockSapling {
     public BlockGeneratedSaplingBase(String name, TreePlacement[] tickPlacements, double bonemealSuccessChance,
                                      TreePlacement[] bonemealPlacements, BiPredicate<World, BlockPos> tickGrowthCondition,
                                      BiPredicate<World, BlockPos> bonemealGrowthCondition, SaplingFormation formation) {
+        this.bonemealSuccessChance = bonemealSuccessChance;
         this.tickPlacements = tickPlacements;
         this.bonemealPlacements = bonemealPlacements;
         this.tickGrowthCondition = tickGrowthCondition;
@@ -145,7 +148,7 @@ public class BlockGeneratedSaplingBase extends BlockSapling {
 
     @Override
     public boolean canUseBonemeal(World world, Random random, BlockPos pos, IBlockState state) {
-        return true;
+        return random.nextDouble() < this.bonemealSuccessChance * Config.saplingBonemealChanceMultiplier();
     }
 
     @Override

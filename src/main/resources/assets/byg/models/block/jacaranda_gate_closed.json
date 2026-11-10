@@ -1,8 +1,0 @@
-{
-  "parent": "byg:gate_open",
-  "textures": {
-    "all": "byg:blocks/jacaranda_planks",
-    "particle": "byg:blocks/jacaranda_planks",
-    "aspen_planks": "byg:blocks/jacaranda_planks"
-  }
-}

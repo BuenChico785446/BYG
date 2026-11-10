@@ -61,15 +61,12 @@ public final class OreDictionaryEntries {
         registerBlock("cobblestone", ModBlocks.scoria, ModBlocks.soapstone);
         registerBlock("dirt", ModBlocks.hardened_dirt, ModBlocks.meadow_dirt, ModBlocks.pasture_dirt, ModBlocks.peat_dirt, ModBlocks.sandy_dirt);
         registerBlock("fenceGateWood",
-                ModBlocks.aspen_gate, ModBlocks.aspen_gate_closed, ModBlocks.baobab_gate, ModBlocks.baobab_gate_open, ModBlocks.blue_enchanted_gate, ModBlocks.blue_enchanted_gate_closed,
-                ModBlocks.cherry_gate, ModBlocks.cherry_gate_closed, ModBlocks.cika_gate, ModBlocks.cika_gate_closed, ModBlocks.cypress_gate, ModBlocks.cypress_gate_closed,
-                ModBlocks.ebony_gate, ModBlocks.ebony_gate_closed, ModBlocks.fir_gate, ModBlocks.fir_gate_closed, ModBlocks.frozen_oak_gate, ModBlocks.frozen_oak_gate_closed,
-                ModBlocks.great_oak_gate, ModBlocks.great_oak_gate_closed, ModBlocks.green_enchanted_gate, ModBlocks.green_enchanted_gate_closed, ModBlocks.hawthorn_gate, ModBlocks.hawthorn_gate_closed,
-                ModBlocks.holly_gate, ModBlocks.holly_gate_closed, ModBlocks.ironwood_gate, ModBlocks.ironwood_gate_closed, ModBlocks.jacaranda_gate, ModBlocks.jacaranda_gate_closed,
-                ModBlocks.mahogany_gate, ModBlocks.mahogany_gate_closed, ModBlocks.mangrove_gate, ModBlocks.mangrove_gate_closed, ModBlocks.maple_gate, ModBlocks.maple_gate_closed,
-                ModBlocks.palm_gate, ModBlocks.palm_gate_closed, ModBlocks.pine_gate, ModBlocks.pine_gate_closed, ModBlocks.rainbow_eucalyptus_gate, ModBlocks.rainbow_eucalyptus_gate_closed,
-                ModBlocks.redwood_gate, ModBlocks.redwood_gate_closed, ModBlocks.rowan_gate, ModBlocks.rowan_gate_closed, ModBlocks.skyris_gate, ModBlocks.skyris_gate_closed,
-                ModBlocks.willow_gate, ModBlocks.willow_gate_open, ModBlocks.witch_hazel_gate, ModBlocks.witch_hazel_gate_closed, ModBlocks.zelkova_gate, ModBlocks.zelkova_gate_closed);
+                ModBlocks.aspen_fence_gate, ModBlocks.baobab_fence_gate, ModBlocks.blue_enchanted_fence_gate, ModBlocks.cherry_fence_gate, ModBlocks.cika_fence_gate,
+                ModBlocks.cypress_fence_gate, ModBlocks.ebony_fence_gate, ModBlocks.fir_fence_gate, ModBlocks.frozen_oak_fence_gate, ModBlocks.great_oak_fence_gate,
+                ModBlocks.green_enchanted_fence_gate, ModBlocks.hawthorn_fence_gate, ModBlocks.holly_fence_gate, ModBlocks.ironwood_fence_gate, ModBlocks.jacaranda_fence_gate,
+                ModBlocks.mahogany_fence_gate, ModBlocks.mangrove_fence_gate, ModBlocks.maple_fence_gate, ModBlocks.palm_fence_gate, ModBlocks.pine_fence_gate,
+                ModBlocks.rainbow_eucalyptus_fence_gate, ModBlocks.redwood_fence_gate, ModBlocks.rowan_fence_gate, ModBlocks.skyris_fence_gate, ModBlocks.willow_fence_gate,
+                ModBlocks.witch_hazel_fence_gate, ModBlocks.zelkova_fence_gate);
         registerBlock("fenceWood",
                 ModBlocks.aspen_fence, ModBlocks.aspen_wood_wall, ModBlocks.baobab_fence, ModBlocks.baobab_wall, ModBlocks.blue_enchanted_fence, ModBlocks.blue_enchanted_wood_wall,
                 ModBlocks.cherry_fence, ModBlocks.cherry_wood_wall, ModBlocks.cika_fence, ModBlocks.cika_wood_wall, ModBlocks.cypress_fence, ModBlocks.cypress_wood_wall,
@@ -90,7 +87,7 @@ public final class OreDictionaryEntries {
         registerBlock("flowerMagenta", ModBlocks.fairy_slipper, ModBlocks.magenta_amaranth, ModBlocks.magenta_celosia, ModBlocks.magenta_tulip);
         registerBlock("flowerOrange", ModBlocks.california_poppy, ModBlocks.guzmania, ModBlocks.incan_lily, ModBlocks.orange_amaranth, ModBlocks.orange_celosia, ModBlocks.orange_daisy);
         registerBlock("flowerPink", ModBlocks.daffodil, ModBlocks.firecracker, ModBlocks.peach_leather_flower, ModBlocks.pink_allium, ModBlocks.pink_allium_bush, ModBlocks.pink_anemone, ModBlocks.pink_daffodil, ModBlocks.pink_orchid, ModBlocks.protea_flower);
-        registerBlock("flowerPurple", ModBlocks.allium_bush, ModBlocks.crocus, ModBlocks.iris, ModBlocks.purple_amaranth, ModBlocks.purple_celosia, ModBlocks.purple_orchid, ModBlocks.purple_age, ModBlocks.purple_tulip);
+        registerBlock("flowerPurple", ModBlocks.allium_bush, ModBlocks.crocus, ModBlocks.iris, ModBlocks.purple_amaranth, ModBlocks.purple_celosia, ModBlocks.purple_orchid, ModBlocks.purple_sage, ModBlocks.purple_tulip);
         registerBlock("flowerRed", ModBlocks.amaranth, ModBlocks.begonia, ModBlocks.kovan, ModBlocks.lazarus_bell_flower, ModBlocks.red_celosia, ModBlocks.red_corn_flower, ModBlocks.red_orchid, ModBlocks.rose, ModBlocks.torch_ginger);
         registerBlock("flowerWhite", ModBlocks.angelica, ModBlocks.richea, ModBlocks.sacred_datura, ModBlocks.snowdrops, ModBlocks.white_anemone, ModBlocks.white_celosia, ModBlocks.white_sage, ModBlocks.winter_rose);
         registerBlock("flowerYellow", ModBlocks.lollipop_flower, ModBlocks.yellow_celosia, ModBlocks.yellow_daffodil, ModBlocks.yellow_tulip);
