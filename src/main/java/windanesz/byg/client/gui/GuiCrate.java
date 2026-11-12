@@ -57,7 +57,7 @@ public class GuiCrate {
         }
 
         protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-            this.fontRenderer.drawString("BlockCrate", 7, 8, -10066330);
+            this.fontRenderer.drawString(net.minecraft.client.resources.I18n.format("tile.crate.name"), 7, 8, -10066330);
         }
     }
 

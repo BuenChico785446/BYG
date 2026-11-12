@@ -339,6 +339,11 @@ public final class TemplateWorldgenHelper {
     /** Template-local x/z of every stem or trunk block in the bottom layer of the templates that must stand on the ground under each of those blocks. */
     private static int[][] stemBase(String path) {
         switch (path) {
+            case "greatoak_tree1":
+            case "greatoak_tree2":
+            case "greatoak_tree3": return new int[][]{{5, 7}, {6, 6}, {6, 7}, {6, 8}, {7, 5}, {7, 6}, {7, 7}, {7, 8}, {7, 9}, {8, 6}, {8, 7}, {8, 8}, {9, 7}};
+            case "greatoak_tree4": return new int[][]{{6, 8}, {7, 7}, {7, 8}, {7, 9}, {8, 6}, {8, 7}, {8, 8}, {8, 9}, {8, 10}, {9, 7}, {9, 8}, {9, 9}, {10, 8}};
+            case "greatoak_tree5": return new int[][]{{4, 7}, {5, 6}, {5, 7}, {6, 5}, {6, 6}, {6, 7}, {6, 8}, {7, 7}};
             case "flower1": return new int[][]{{3, 4}, {4, 4}, {4, 5}};
             case "flower2": return new int[][]{{4, 3}, {5, 2}, {5, 3}, {6, 6}, {6, 7}, {7, 7}};
             case "redoak_tree1":
