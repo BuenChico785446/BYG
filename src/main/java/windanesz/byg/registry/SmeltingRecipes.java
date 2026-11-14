@@ -98,6 +98,8 @@ public class SmeltingRecipes {
         registerOreDictionaryFuel("treeSapling", 100);
         registerDoorFuelValues();
         registerBlockFuel(ModBlocks.leaf_pile_dead, 100);
+        registerBlockFuel(ModBlocks.dead_grass, 100);
+        registerBlockFuel(ModBlocks.short_dead_grass, 100);
     }
 
     private static void registerBlockFuel(Block block, int burnTime) {

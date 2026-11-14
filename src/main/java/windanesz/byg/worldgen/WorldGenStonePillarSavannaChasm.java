@@ -31,6 +31,7 @@ public class WorldGenStonePillarSavannaChasm extends WorldGenerator {
             return false;
         }
 
+        FastBlockWriter out = new FastBlockWriter(world);
         boolean carved = false;
         for (int dx = -radiusX; dx <= radiusX; dx++) {
             for (int dz = -radiusZ; dz <= radiusZ; dz++) {
@@ -49,9 +50,9 @@ public class WorldGenStonePillarSavannaChasm extends WorldGenerator {
                 int carveDepth = Math.max(1, Math.round((1.0f - distSq) * depth) + (rand.nextBoolean() ? 1 : 0));
                 for (int y = 0; y < carveDepth; y++) {
                     BlockPos carvePos = localSurface.up(1 - y);
-                    clearColumnBlock(world, carvePos);
+                    clearColumnBlock(out, carvePos);
                     if (y == 0 && rand.nextInt(4) == 0) {
-                        clearColumnBlock(world, carvePos.up());
+                        clearColumnBlock(out, carvePos.up());
                     }
                 }
                 carved = true;
@@ -60,14 +61,14 @@ public class WorldGenStonePillarSavannaChasm extends WorldGenerator {
         return carved;
     }
 
-    private static void clearColumnBlock(World world, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos);
+    private static void clearColumnBlock(FastBlockWriter out, BlockPos pos) {
+        IBlockState state = out.world().getBlockState(pos);
         Material material = state.getMaterial();
         Block block = state.getBlock();
         if (material.isLiquid() || block == Blocks.BEDROCK) {
             return;
         }
-        world.setBlockState(pos, AIR, 2);
+        out.set(pos, AIR);
     }
 
     private static BlockPos findSurface(World world, BlockPos origin) {

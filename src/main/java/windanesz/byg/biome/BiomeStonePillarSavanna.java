@@ -1,8 +1,11 @@
 package windanesz.byg.biome;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockTallGrass;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -24,7 +27,7 @@ public class BiomeStonePillarSavanna extends Biome {
     private static final WorldGenStonePillarSavannaMound MOUND_GENERATOR = new WorldGenStonePillarSavannaMound();
     private static final WorldGenStonePillarWaterfall WATERFALL_GENERATOR = new WorldGenStonePillarWaterfall();
     private static final WorldGenTallGrass PILLAR_GRASS_GENERATOR = new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
-    private static final WorldGenTallGrass GROUND_GRASS_GENERATOR = new WorldGenTallGrass(BlockTallGrass.EnumType.GRASS);
+    private static final IBlockState TALL_GRASS = Blocks.TALLGRASS.getDefaultState().withProperty(BlockTallGrass.TYPE, BlockTallGrass.EnumType.GRASS);
     private static final WorldGenAbstractTree DRY_BROWN_OAK_TREE = BygTrees.DRY_BROWN_OAK;
     private static final WorldGenAbstractTree DRY_BROWN_TALL_OAK_TREE = BygTrees.DRY_BROWN_OAK_TALL;
     private static final WorldGenAbstractTree DRY_GREEN_OAK_TREE = BygTrees.DRY_GREEN_OAK;
@@ -44,9 +47,7 @@ public class BiomeStonePillarSavanna extends Biome {
         this.decorator.generateFalls = false;
         this.decorator.treesPerChunk = 0;
         this.decorator.flowersPerChunk = 0;
-        // Disable vanilla decorations to prevent cascading worldgen
-        // (vanilla generators use rand.nextInt(16) + 8 which extends beyond chunk boundaries)
-        this.decorator.grassPerChunk = 0; // Custom grass via placeGroundGrassPatches() and placePillarGrass()
+        this.decorator.grassPerChunk = 0;
         this.decorator.deadBushPerChunk = 0;
         this.decorator.mushroomsPerChunk = 0;
         this.decorator.bigMushroomsPerChunk = 0;
@@ -87,10 +88,7 @@ public class BiomeStonePillarSavanna extends Biome {
         placeGroundDeadBushes(worldIn, rand, pos);
         placeGroundCacti(worldIn, rand, pos);
         placePillars(worldIn, rand, pos);
-        
-        // NOTE: super.decorate() is NOT called to prevent cascading worldgen from vanilla decorators
-        // (lakes, dungeons, ores, etc. that use rand.nextInt(16) + 8 pattern)
-        // All decoration is handled by custom methods and FlowerWorldgenRegistry
+        // super.decorate() is skipped on purpose: vanilla decorators spread past chunk borders and cascade worldgen.
     }
 
     private static void placePillars(World worldIn, Random rand, BlockPos pos) {
@@ -143,7 +141,7 @@ public class BiomeStonePillarSavanna extends Biome {
     private static void placeGroundGrassPatches(World worldIn, Random rand, BlockPos pos) {
         int deadGrassPatches = rand.nextInt(3);
         for (int i = 0; i < deadGrassPatches; i++) {
-            placeDeadGrassPatch(worldIn, rand, pos.add(rand.nextInt(16) + 8, 0, rand.nextInt(16) + 8), pos);
+            placeDeadGrassPatch(worldIn, rand, pos.add(rand.nextInt(16) + 8, 0, rand.nextInt(16) + 8));
         }
 
         int tallGrassPatches = rand.nextInt(3);
@@ -152,17 +150,13 @@ public class BiomeStonePillarSavanna extends Biome {
         }
     }
 
-    private static void placeDeadGrassPatch(World worldIn, Random rand, BlockPos centerPos, BlockPos chunkPos) {
+    private static void placeDeadGrassPatch(World worldIn, Random rand, BlockPos centerPos) {
+        if (ModBlocks.dead_grass == null) {
+            return;
+        }
         for (int i = 0; i < 8; i++) {
-            int dx = rand.nextInt(7) - 3;
-            int dz = rand.nextInt(7) - 3;
-            
-            // Clamp to chunk boundaries to prevent cascading worldgen lag
-            int x = Math.max(chunkPos.getX(), Math.min(chunkPos.getX() + 15, centerPos.getX() + dx));
-            int z = Math.max(chunkPos.getZ(), Math.min(chunkPos.getZ() + 15, centerPos.getZ() + dz));
-            
-            BlockPos grassPos = worldIn.getHeight(new BlockPos(x, 0, z));
-            if (ModBlocks.dead_grass != null && worldIn.isAirBlock(grassPos) && ModBlocks.dead_grass.canPlaceBlockAt(worldIn, grassPos)) {
+            BlockPos grassPos = randomPatchSurface(worldIn, rand, centerPos);
+            if (grassPos != null && worldIn.isAirBlock(grassPos) && ModBlocks.dead_grass.canPlaceBlockAt(worldIn, grassPos)) {
                 worldIn.setBlockState(grassPos, ModBlocks.dead_grass.getDefaultState(), 2);
             }
         }
@@ -170,15 +164,43 @@ public class BiomeStonePillarSavanna extends Biome {
 
     private static void placeTallGrassPatch(World worldIn, Random rand, BlockPos centerPos, BlockPos chunkPos) {
         for (int i = 0; i < 8; i++) {
-            int dx = rand.nextInt(7) - 3;
-            int dz = rand.nextInt(7) - 3;
-            
-            // Clamp to chunk boundaries to prevent cascading worldgen lag
-            int x = Math.max(chunkPos.getX(), Math.min(chunkPos.getX() + 15, centerPos.getX() + dx));
-            int z = Math.max(chunkPos.getZ(), Math.min(chunkPos.getZ() + 15, centerPos.getZ() + dz));
-            
-            BlockPos grassPos = worldIn.getHeight(new BlockPos(x, 0, z));
-            GROUND_GRASS_GENERATOR.generate(worldIn, rand, grassPos);
+            BlockPos surface = randomPatchSurface(worldIn, rand, centerPos);
+            if (surface != null) {
+                scatterTallGrass(worldIn, rand, surface, chunkPos);
+            }
+        }
+    }
+
+    private static BlockPos randomPatchSurface(World worldIn, Random rand, BlockPos centerPos) {
+        BlockPos surface = worldIn.getHeight(centerPos.add(rand.nextInt(7) - 3, 0, rand.nextInt(7) - 3));
+        return worldIn.getBiome(surface) instanceof BiomeStonePillarSavanna ? surface : null;
+    }
+
+    private static void scatterTallGrass(World worldIn, Random rand, BlockPos surface, BlockPos chunkPos) {
+        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos(surface);
+        while (cursor.getY() > 0) {
+            IBlockState state = worldIn.getBlockState(cursor);
+            Block block = state.getBlock();
+            if (!block.isAir(state, worldIn, cursor) && !block.isLeaves(state, worldIn, cursor)) {
+                break;
+            }
+            cursor.move(EnumFacing.DOWN);
+        }
+
+        int originX = cursor.getX();
+        int originY = cursor.getY();
+        int originZ = cursor.getZ();
+        for (int attempt = 0; attempt < 128; attempt++) {
+            int x = originX + rand.nextInt(8) - rand.nextInt(8);
+            int y = originY + rand.nextInt(4) - rand.nextInt(4);
+            int z = originZ + rand.nextInt(8) - rand.nextInt(8);
+            if (x < chunkPos.getX() || x > chunkPos.getX() + 31 || z < chunkPos.getZ() || z > chunkPos.getZ() + 31) {
+                continue;
+            }
+            cursor.setPos(x, y, z);
+            if (worldIn.isAirBlock(cursor) && Blocks.TALLGRASS.canBlockStay(worldIn, cursor, TALL_GRASS)) {
+                worldIn.setBlockState(cursor, TALL_GRASS, 2);
+            }
         }
     }
 

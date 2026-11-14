@@ -58,6 +58,7 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
             return false;
         }
 
+        FastBlockWriter out = new FastBlockWriter(world);
         long shapeSeed = world.getSeed() ^ rand.nextLong();
         int flareStartY = topY - flareHeight;
         int capShiftX = rand.nextInt(3) - 1;
@@ -66,39 +67,41 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
         int capCenterZ = surface.getZ() + capShiftZ;
         List<SupportColumn> supports = createSupportColumns(rand, large, huge, plateByThree, grandDisc, grandPillar, surface.getX(), surface.getZ(), capRadiusX, capRadiusZ, shaftRadius);
 
-        for (SupportColumn support : supports) {
-            buildSupportColumn(world, baseY, topY, flareStartY, support, capCenterX, capCenterZ, shaftRadius, shapeSeed);
-        }
         int lobeShiftX = (rand.nextBoolean() ? 1 : -1) * (capRadiusX / 4 + rand.nextInt(3));
         int lobeShiftZ = (rand.nextBoolean() ? 1 : -1) * (capRadiusZ / 4 + rand.nextInt(3));
         int lobeRadiusX = Math.max(5, capRadiusX - 2 - rand.nextInt(2));
         int lobeRadiusZ = Math.max(5, capRadiusZ - 2 - rand.nextInt(2));
         boolean domedTop = rand.nextBoolean();
 
-        buildUpperMesaShoulder(world, flareStartY, topY, capCenterX, capCenterZ, shaftRadius, capRadiusX, capRadiusZ,
+        MesaLayer[] shoulderLayers = createShoulderLayers(flareStartY, topY, capCenterX, capCenterZ, shaftRadius, capRadiusX, capRadiusZ,
                 lobeShiftX, lobeShiftZ, lobeRadiusX, lobeRadiusZ, grandPillar, huge, shapeSeed);
 
-        for (int layer = 0; layer < capThickness; layer++) {
+        // Highest layers first: the chunk relights a column's heightmap once instead of once per layer.
+        for (int layer = capThickness - 1; layer >= 0; layer--) {
             float layerInset = layer == 0 ? 1.0f : 0.0f;
-            fillNoisyMesaLayer(world, capCenterX, topY + layer, capCenterZ, capRadiusX - layerInset, capRadiusZ - layerInset,
+            fillMesaLayer(out, new MesaLayer(capCenterX, topY + layer, capCenterZ, capRadiusX - layerInset, capRadiusZ - layerInset,
                     capCenterX + lobeShiftX, capCenterZ + lobeShiftZ, lobeRadiusX - layerInset, lobeRadiusZ - layerInset, 0.18f,
-                    shapeSeed + 1000L + layer * 43L);
+                    shapeSeed + 1000L + layer * 43L));
         }
-        sealCapUnderside(world, capCenterX, topY, capCenterZ, capRadiusX - 1.0f, capRadiusZ - 1.0f,
+        for (int i = shoulderLayers.length - 1; i >= 0; i--) {
+            fillMesaLayer(out, shoulderLayers[i]);
+        }
+        buildSupportColumns(out, supports, baseY, topY, flareStartY, capCenterX, capCenterZ, shaftRadius, shapeSeed, shoulderLayers);
+        sealCapUnderside(out, capCenterX, topY, capCenterZ, capRadiusX - 1.0f, capRadiusZ - 1.0f,
                 capCenterX + lobeShiftX, capCenterZ + lobeShiftZ, lobeRadiusX - 1.0f, lobeRadiusZ - 1.0f, shapeSeed + 1400L);
 
         for (SupportColumn support : supports) {
-            smoothBaseToGround(world, support.x, baseY + 2, support.z, support.baseRadius + 2, shapeSeed + support.x * 17L + support.z * 29L);
+            smoothBaseToGround(out, support.x, baseY + 2, support.z, support.baseRadius + 2, shapeSeed + support.x * 17L + support.z * 29L);
         }
-        List<BlockPos> topPositions = buildTopSurface(world, rand, capCenterX, topY + capThickness, capCenterZ, capRadiusX, capRadiusZ,
+        List<BlockPos> topPositions = buildTopSurface(out, capCenterX, topY + capThickness, capCenterZ, capRadiusX, capRadiusZ,
                 capCenterX + lobeShiftX, capCenterZ + lobeShiftZ, lobeRadiusX, lobeRadiusZ, domedTop, shapeSeed);
         placeTrees(world, rand, topPositions, large, huge);
         return true;
     }
 
-    private static void buildUpperMesaShoulder(World world, int startY, int topY, int capCenterX, int capCenterZ, int shaftRadius,
-                                               int capRadiusX, int capRadiusZ, int lobeShiftX, int lobeShiftZ,
-                                               int lobeRadiusX, int lobeRadiusZ, boolean grandPillar, boolean huge, long shapeSeed) {
+    private static MesaLayer[] createShoulderLayers(int startY, int topY, int capCenterX, int capCenterZ, int shaftRadius,
+                                                    int capRadiusX, int capRadiusZ, int lobeShiftX, int lobeShiftZ,
+                                                    int lobeRadiusX, int lobeRadiusZ, boolean grandPillar, boolean huge, long shapeSeed) {
         int height = Math.max(1, topY - startY);
         float startScale = grandPillar ? 0.62f : (huge ? 0.5f : 0.42f);
         float startLobeScale = grandPillar ? 0.72f : (huge ? 0.58f : 0.46f);
@@ -107,6 +110,7 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
         float startLobeRadiusX = Math.max(startRadiusX - 1.0f, lobeRadiusX * startLobeScale);
         float startLobeRadiusZ = Math.max(startRadiusZ - 1.0f, lobeRadiusZ * startLobeScale);
 
+        MesaLayer[] layers = new MesaLayer[Math.max(0, topY - startY)];
         for (int y = startY; y < topY; y++) {
             float progress = (float) (y - startY) / (float) height;
             float eased = progress * progress * (3.0f - 2.0f * progress);
@@ -117,51 +121,65 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
             float layerLobeRadiusX = lerpFloat(startLobeRadiusX, lobeRadiusX - 1.0f, eased);
             float layerLobeRadiusZ = lerpFloat(startLobeRadiusZ, lobeRadiusZ - 1.0f, eased);
             float edgeNoiseScale = y >= topY - 3 ? 0.14f : 0.08f;
-            fillNoisyMesaLayer(world, capCenterX, y, capCenterZ, radiusX, radiusZ,
+            layers[y - startY] = new MesaLayer(capCenterX, y, capCenterZ, radiusX, radiusZ,
                     lobeCenterX, lobeCenterZ, layerLobeRadiusX, layerLobeRadiusZ, edgeNoiseScale,
                     shapeSeed + 820L + y * 29L);
         }
+        return layers;
     }
 
-    private void buildSupportColumn(World world, int baseY, int topY, int flareStartY, SupportColumn support, int capCenterX, int capCenterZ, int shaftRadius, long shapeSeed) {
+    private void buildSupportColumns(FastBlockWriter out, List<SupportColumn> supports, int baseY, int topY, int flareStartY, int capCenterX, int capCenterZ,
+                                     int shaftRadius, long shapeSeed, MesaLayer[] shoulderLayers) {
+        for (int y = topY - 1; y >= baseY; y--) {
+            for (SupportColumn support : supports) {
+                if (y < topY - support.topYOffset) {
+                    buildSupportLayer(out, y, baseY, topY, flareStartY, support, capCenterX, capCenterZ, shaftRadius, shapeSeed, shoulderLayers);
+                }
+            }
+        }
+    }
+
+    private void buildSupportLayer(FastBlockWriter out, int y, int baseY, int topY, int flareStartY, SupportColumn support, int capCenterX, int capCenterZ,
+                                   int shaftRadius, long shapeSeed, MesaLayer[] shoulderLayers) {
         int supportTopY = topY - support.topYOffset;
         int supportFlareStartY = support.topRadius > support.baseRadius
                 ? Math.max(baseY + 3, Math.min(baseY + (supportTopY - baseY) / 3, supportTopY - 8))
                 : Math.min(flareStartY, supportTopY - 3);
-        for (int y = baseY; y < supportTopY; y++) {
-            boolean isFlareLayer = y >= supportFlareStartY;
-            int centerX = support.x;
-            int centerZ = support.z;
-            if (isFlareLayer) {
-                float flareShiftProgress = (float) (y - supportFlareStartY) / (float) Math.max(1, supportTopY - supportFlareStartY);
-                centerX += Math.round((capCenterX - support.x) * flareShiftProgress * 0.55f);
-                centerZ += Math.round((capCenterZ - support.z) * flareShiftProgress * 0.55f);
-            }
+        boolean isFlareLayer = y >= supportFlareStartY;
+        int centerX = support.x;
+        int centerZ = support.z;
+        if (isFlareLayer) {
+            float flareShiftProgress = (float) (y - supportFlareStartY) / (float) Math.max(1, supportTopY - supportFlareStartY);
+            centerX += Math.round((capCenterX - support.x) * flareShiftProgress * 0.55f);
+            centerZ += Math.round((capCenterZ - support.z) * flareShiftProgress * 0.55f);
+        }
 
-            float heightProgress = (float) (y - baseY) / (float) Math.max(1, supportTopY - baseY - 1);
-            float widenProgress = support.topRadius > support.baseRadius ? Math.max(0.0f, (heightProgress - 0.05f) / 0.95f) : 0.0f;
-            float easedWiden = widenProgress * widenProgress * (3.0f - 2.0f * widenProgress);
-            int radius = support.baseRadius + Math.round((support.topRadius - support.baseRadius) * easedWiden);
-            if (y <= baseY + 2) {
-                radius += 1;
-            }
-            if (isFlareLayer) {
-                float flareProgress = (float) (y - supportFlareStartY) / (float) Math.max(1, supportTopY - supportFlareStartY);
-                radius = Math.max(radius, support.baseRadius + Math.round((support.topRadius - support.baseRadius) * (0.2f + flareProgress * flareProgress * 0.8f)));
-                radius += Math.round((shaftRadius - support.baseRadius + 2) * flareProgress * flareProgress * 0.35f);
-                radius += Math.round(noiseValue(centerX, y, centerZ, shapeSeed + support.x * 13L + support.z * 19L) * 0.35f);
-            }
-            radius = Math.max(support.baseRadius, radius);
+        float heightProgress = (float) (y - baseY) / (float) Math.max(1, supportTopY - baseY - 1);
+        float widenProgress = support.topRadius > support.baseRadius ? Math.max(0.0f, (heightProgress - 0.05f) / 0.95f) : 0.0f;
+        float easedWiden = widenProgress * widenProgress * (3.0f - 2.0f * widenProgress);
+        int radius = support.baseRadius + Math.round((support.topRadius - support.baseRadius) * easedWiden);
+        if (y <= baseY + 2) {
+            radius += 1;
+        }
+        if (isFlareLayer) {
+            float flareProgress = (float) (y - supportFlareStartY) / (float) Math.max(1, supportTopY - supportFlareStartY);
+            radius = Math.max(radius, support.baseRadius + Math.round((support.topRadius - support.baseRadius) * (0.2f + flareProgress * flareProgress * 0.8f)));
+            radius += Math.round((shaftRadius - support.baseRadius + 2) * flareProgress * flareProgress * 0.35f);
+            radius += Math.round(noiseValue(centerX, y, centerZ, shapeSeed + support.x * 13L + support.z * 19L) * 0.35f);
+        }
+        radius = Math.max(support.baseRadius, radius);
 
-            if (isFlareLayer) {
-                fillNoisyDisc(world, centerX, y, centerZ, radius, 0.32f, shapeSeed + y * 31L + support.x * 13L + support.z * 19L);
-            } else {
-                fillDisc(world, centerX, y, centerZ, radius, shapeSeed + y * 31L + support.x * 13L + support.z * 19L);
-            }
+        int shoulderIndex = y - flareStartY;
+        MesaLayer shoulder = shoulderIndex >= 0 && shoulderIndex < shoulderLayers.length ? shoulderLayers[shoulderIndex] : null;
+        long discSeed = shapeSeed + y * 31L + support.x * 13L + support.z * 19L;
+        if (isFlareLayer) {
+            fillNoisyDisc(out, centerX, y, centerZ, radius, 0.32f, discSeed, shoulder);
+        } else {
+            fillDisc(out, centerX, y, centerZ, radius, discSeed, shoulder);
         }
     }
 
-    private List<BlockPos> buildTopSurface(World world, Random rand, int centerX, int surfaceY, int centerZ,
+    private List<BlockPos> buildTopSurface(FastBlockWriter out, int centerX, int surfaceY, int centerZ,
                                            int capRadiusX, int capRadiusZ, int lobeCenterX, int lobeCenterZ,
                                            int lobeRadiusX, int lobeRadiusZ, boolean domedTop, long shapeSeed) {
         List<BlockPos> topPositions = new ArrayList<>();
@@ -185,27 +203,27 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
                 BlockPos basePos = new BlockPos(worldX, surfaceY - 1 + rise, worldZ);
                 BlockPos topPos = basePos.up();
 
-                clearAbove(world, topPos, 7);
+                clearAbove(out.world(), topPos, 7);
 
                 if (topNoise > 0.0f || (fertileCore && topNoise > -0.30f)) {
-                    fillTopColumn(world, worldX, surfaceY - 1, worldZ, basePos.getY(), DIRT);
-                    world.setBlockState(basePos, DIRT, 2);
-                    world.setBlockState(topPos, GRASS, 2);
+                    out.set(topPos, GRASS);
+                    out.set(basePos, DIRT);
+                    fillTopColumn(out, worldX, surfaceY - 1, worldZ, basePos.getY(), DIRT);
                     if (fertileCore) {
                         topPositions.add(topPos);
                     }
                 } else {
-                    fillTopColumn(world, worldX, surfaceY - 1, worldZ, basePos.getY(), COARSE_DIRT);
-                    world.setBlockState(basePos, COARSE_DIRT, 2);
-                    world.setBlockState(topPos, topNoise > -0.15f ? DIRT : COARSE_DIRT, 2);
+                    out.set(topPos, topNoise > -0.15f ? DIRT : COARSE_DIRT);
+                    out.set(basePos, COARSE_DIRT);
+                    fillTopColumn(out, worldX, surfaceY - 1, worldZ, basePos.getY(), COARSE_DIRT);
                 }
             }
         }
 
         if (topPositions.isEmpty()) {
             BlockPos fallback = new BlockPos(centerX, surfaceY, centerZ);
-            world.setBlockState(fallback.down(), DIRT, 2);
-            world.setBlockState(fallback, GRASS, 2);
+            out.set(fallback, GRASS);
+            out.set(fallback.down(), DIRT);
             topPositions.add(fallback);
         }
         return topPositions;
@@ -223,19 +241,13 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
         return Math.min(3, Math.max(0, rise));
     }
 
-    private static void fillTopColumn(World world, int x, int startY, int z, int endY, IBlockState fillState) {
+    private static void fillTopColumn(FastBlockWriter out, int x, int startY, int z, int endY, IBlockState fillState) {
         for (int y = startY; y < endY; y++) {
-            world.setBlockState(new BlockPos(x, y, z), fillState, 2);
+            out.set(x, y, z, fillState);
         }
     }
 
-    private static void fillTopClayColumn(World world, int x, int startY, int z, int endY, long shapeSeed) {
-        for (int y = startY; y < endY; y++) {
-            world.setBlockState(new BlockPos(x, y, z), chooseClayState(x, y, z, shapeSeed + y * 17L), 2);
-        }
-    }
-
-    private void smoothBaseToGround(World world, int centerX, int startY, int centerZ, int radius, long shapeSeed) {
+    private void smoothBaseToGround(FastBlockWriter out, int centerX, int startY, int centerZ, int radius, long shapeSeed) {
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dz = -radius; dz <= radius; dz++) {
                 float effectiveRadius = radius + noiseValue(centerX + dx, startY, centerZ + dz, shapeSeed + 4000L);
@@ -244,63 +256,68 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
                 }
 
                 int supportStartY = startY + Math.max(0, Math.round((1.0f - ((float) (dx * dx + dz * dz) / (float) Math.max(1, radius * radius))) * 3.0f));
-                fillDownToGround(world, new BlockPos(centerX + dx, supportStartY, centerZ + dz), shapeSeed);
+                fillDownToGround(out, centerX + dx, supportStartY, centerZ + dz, shapeSeed);
             }
         }
     }
 
-    private static void fillDownToGround(World world, BlockPos start, long shapeSeed) {
-        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos(start);
+    private static void fillDownToGround(FastBlockWriter out, int x, int startY, int z, long shapeSeed) {
+        World world = out.world();
+        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos(x, startY, z);
         while (cursor.getY() > 1) {
             IBlockState state = world.getBlockState(cursor);
             Material material = state.getMaterial();
             if (!material.isReplaceable() && !material.isLiquid() && !state.getBlock().isLeaves(state, world, cursor)) {
                 break;
             }
-            world.setBlockState(cursor, chooseClayState(cursor.getX(), cursor.getY(), cursor.getZ(), shapeSeed), 2);
+            out.set(cursor.getX(), cursor.getY(), cursor.getZ(), chooseClayState(cursor.getX(), cursor.getY(), cursor.getZ(), shapeSeed));
             cursor.move(EnumFacing.DOWN);
         }
     }
 
-    private static void fillDisc(World world, int centerX, int y, int centerZ, int radius, long shapeSeed) {
+    private static void fillDisc(FastBlockWriter out, int centerX, int y, int centerZ, int radius, long shapeSeed, MesaLayer shoulder) {
         int radiusSq = radius * radius;
         for (int dx = -radius; dx <= radius; dx++) {
             for (int dz = -radius; dz <= radius; dz++) {
-                if (dx * dx + dz * dz <= radiusSq) {
-                    world.setBlockState(new BlockPos(centerX + dx, y, centerZ + dz), chooseClayState(centerX + dx, y, centerZ + dz, shapeSeed), 2);
-                }
-            }
-        }
-    }
-
-    private static void fillNoisyDisc(World world, int centerX, int y, int centerZ, int radius, float edgeNoiseScale, long shapeSeed) {
-        for (int dx = -radius - 1; dx <= radius + 1; dx++) {
-            for (int dz = -radius - 1; dz <= radius + 1; dz++) {
-                float effectiveRadius = radius + noiseValue(centerX + dx, y, centerZ + dz, shapeSeed) * edgeNoiseScale;
-                if (dx * dx + dz * dz <= effectiveRadius * effectiveRadius) {
-                    world.setBlockState(new BlockPos(centerX + dx, y, centerZ + dz), chooseClayState(centerX + dx, y, centerZ + dz, shapeSeed), 2);
-                }
-            }
-        }
-    }
-
-    private static void fillNoisyMesaLayer(World world, int centerX, int y, int centerZ, float radiusX, float radiusZ,
-                                           int lobeCenterX, int lobeCenterZ, float lobeRadiusX, float lobeRadiusZ,
-                                           float edgeNoiseScale, long shapeSeed) {
-        int maxRadiusX = Math.max(Math.round(radiusX), Math.round(lobeRadiusX));
-        int maxRadiusZ = Math.max(Math.round(radiusZ), Math.round(lobeRadiusZ));
-        for (int dx = -maxRadiusX - 2; dx <= maxRadiusX + 2; dx++) {
-            for (int dz = -maxRadiusZ - 2; dz <= maxRadiusZ + 2; dz++) {
                 int worldX = centerX + dx;
                 int worldZ = centerZ + dz;
-                if (isInsideMesaTop(worldX, worldZ, centerX, centerZ, radiusX, radiusZ, lobeCenterX, lobeCenterZ, lobeRadiusX, lobeRadiusZ, y, shapeSeed + 700L, edgeNoiseScale)) {
-                    world.setBlockState(new BlockPos(worldX, y, worldZ), chooseClayState(worldX, y, worldZ, shapeSeed), 2);
+                if (dx * dx + dz * dz <= radiusSq && !isCovered(shoulder, worldX, worldZ)) {
+                    out.set(worldX, y, worldZ, chooseClayState(worldX, y, worldZ, shapeSeed));
                 }
             }
         }
     }
 
-    private static void sealCapUnderside(World world, int centerX, int y, int centerZ, float radiusX, float radiusZ,
+    private static void fillNoisyDisc(FastBlockWriter out, int centerX, int y, int centerZ, int radius, float edgeNoiseScale, long shapeSeed, MesaLayer shoulder) {
+        for (int dx = -radius - 1; dx <= radius + 1; dx++) {
+            for (int dz = -radius - 1; dz <= radius + 1; dz++) {
+                int worldX = centerX + dx;
+                int worldZ = centerZ + dz;
+                float effectiveRadius = radius + noiseValue(worldX, y, worldZ, shapeSeed) * edgeNoiseScale;
+                if (dx * dx + dz * dz <= effectiveRadius * effectiveRadius && !isCovered(shoulder, worldX, worldZ)) {
+                    out.set(worldX, y, worldZ, chooseClayState(worldX, y, worldZ, shapeSeed));
+                }
+            }
+        }
+    }
+
+    private static boolean isCovered(MesaLayer shoulder, int x, int z) {
+        return shoulder != null && shoulder.covers(x, z);
+    }
+
+    private static void fillMesaLayer(FastBlockWriter out, MesaLayer layer) {
+        for (int dx = -layer.extentX; dx <= layer.extentX; dx++) {
+            for (int dz = -layer.extentZ; dz <= layer.extentZ; dz++) {
+                int worldX = layer.centerX + dx;
+                int worldZ = layer.centerZ + dz;
+                if (layer.isInside(worldX, worldZ)) {
+                    out.set(worldX, layer.y, worldZ, chooseClayState(worldX, layer.y, worldZ, layer.shapeSeed));
+                }
+            }
+        }
+    }
+
+    private static void sealCapUnderside(FastBlockWriter out, int centerX, int y, int centerZ, float radiusX, float radiusZ,
                                          int lobeCenterX, int lobeCenterZ, float lobeRadiusX, float lobeRadiusZ, long shapeSeed) {
         int maxRadiusX = Math.max(Math.round(radiusX), Math.round(lobeRadiusX));
         int maxRadiusZ = Math.max(Math.round(radiusZ), Math.round(lobeRadiusZ));
@@ -312,6 +329,7 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
                     continue;
                 }
 
+                World world = out.world();
                 BlockPos capPos = new BlockPos(worldX, y, worldZ);
                 if (world.isAirBlock(capPos)) {
                     continue;
@@ -326,7 +344,7 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
 
                 if (gapDepth > 0 && !world.isAirBlock(cursor)) {
                     for (int fillY = y - 1; fillY > y - 1 - gapDepth; fillY--) {
-                        world.setBlockState(new BlockPos(worldX, fillY, worldZ), chooseClayState(worldX, fillY, worldZ, shapeSeed + fillY * 23L), 2);
+                        out.set(worldX, fillY, worldZ, chooseClayState(worldX, fillY, worldZ, shapeSeed + fillY * 23L));
                     }
                 }
             }
@@ -371,10 +389,6 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
         return ((hash >>> 16) & 1023L) / 511.5f - 1.0f;
     }
 
-    private static int lerpInt(int start, int end, float progress) {
-        return Math.round(start + (end - start) * progress);
-    }
-
     private static float lerpFloat(float start, float end, float progress) {
         return start + (end - start) * progress;
     }
@@ -407,7 +421,9 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos(start);
         for (int i = 0; i < height; i++) {
             IBlockState state = world.getBlockState(cursor);
-            if (state.getMaterial().isReplaceable() || state.getMaterial().isLiquid() || state.getBlock().isLeaves(state, world, cursor)) {
+            Block block = state.getBlock();
+            if (!block.isAir(state, world, cursor)
+                    && (state.getMaterial().isReplaceable() || state.getMaterial().isLiquid() || block.isLeaves(state, world, cursor))) {
                 world.setBlockToAir(cursor);
             }
             cursor.move(EnumFacing.UP);
@@ -497,6 +513,48 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
             supports.add(new SupportColumn(centerX + offsetX, centerZ + offsetZ, radius, topRadius, topYOffset));
         }
         return supports;
+    }
+
+    private static final class MesaLayer {
+        private final int centerX;
+        private final int y;
+        private final int centerZ;
+        private final float radiusX;
+        private final float radiusZ;
+        private final int lobeCenterX;
+        private final int lobeCenterZ;
+        private final float lobeRadiusX;
+        private final float lobeRadiusZ;
+        private final float edgeNoiseScale;
+        private final long shapeSeed;
+        private final int extentX;
+        private final int extentZ;
+
+        private MesaLayer(int centerX, int y, int centerZ, float radiusX, float radiusZ,
+                          int lobeCenterX, int lobeCenterZ, float lobeRadiusX, float lobeRadiusZ,
+                          float edgeNoiseScale, long shapeSeed) {
+            this.centerX = centerX;
+            this.y = y;
+            this.centerZ = centerZ;
+            this.radiusX = radiusX;
+            this.radiusZ = radiusZ;
+            this.lobeCenterX = lobeCenterX;
+            this.lobeCenterZ = lobeCenterZ;
+            this.lobeRadiusX = lobeRadiusX;
+            this.lobeRadiusZ = lobeRadiusZ;
+            this.edgeNoiseScale = edgeNoiseScale;
+            this.shapeSeed = shapeSeed;
+            this.extentX = Math.max(Math.round(radiusX), Math.round(lobeRadiusX)) + 2;
+            this.extentZ = Math.max(Math.round(radiusZ), Math.round(lobeRadiusZ)) + 2;
+        }
+
+        private boolean isInside(int x, int z) {
+            return isInsideMesaTop(x, z, centerX, centerZ, radiusX, radiusZ, lobeCenterX, lobeCenterZ, lobeRadiusX, lobeRadiusZ, y, shapeSeed + 700L, edgeNoiseScale);
+        }
+
+        private boolean covers(int x, int z) {
+            return Math.abs(x - centerX) <= extentX && Math.abs(z - centerZ) <= extentZ && isInside(x, z);
+        }
     }
 
     private static final class SupportColumn {

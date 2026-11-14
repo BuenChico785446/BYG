@@ -30,6 +30,7 @@ public class WorldGenStonePillarSavannaMound extends WorldGenerator {
             return false;
         }
 
+        FastBlockWriter out = new FastBlockWriter(world);
         boolean raised = false;
         for (int dx = -radiusX; dx <= radiusX; dx++) {
             for (int dz = -radiusZ; dz <= radiusZ; dz++) {
@@ -47,7 +48,7 @@ public class WorldGenStonePillarSavannaMound extends WorldGenerator {
 
                 int moundHeight = Math.max(1, Math.round((1.0f - distSq) * height));
                 for (int y = 1; y <= moundHeight; y++) {
-                    world.setBlockState(localSurface.up(y), HARDENED_CLAY, 2);
+                    out.set(localSurface.getX(), localSurface.getY() + y, localSurface.getZ(), HARDENED_CLAY);
                 }
                 raised = true;
             }

@@ -37,6 +37,7 @@ public final class TemplateWorldgenHelper {
      * update without its own observer lookup reaching an unloaded chunk.
      */
     private static final int CHUNK_BORDER_MARGIN = 2;
+    private static final int PLACE_FLAGS = 2 | 16;
 
     private TemplateWorldgenHelper() {
     }
@@ -308,7 +309,7 @@ public final class TemplateWorldgenHelper {
                     }
                     BlockPos root = base.down();
                     while (root.getY() > 0 && world.getBlockState(root).getMaterial() == Material.WATER) {
-                        world.setBlockState(root, state, 2);
+                        world.setBlockState(root, state, PLACE_FLAGS);
                         root = root.down();
                     }
                     break;
@@ -528,7 +529,7 @@ public final class TemplateWorldgenHelper {
 
 
     public static void placeTemplateWithSettings(World world, Template template, BlockPos spawnTo, PlacementSettings settings) {
-        template.addBlocksToWorld(world, spawnTo, settings);
+        template.addBlocksToWorld(world, spawnTo, settings, PLACE_FLAGS);
     }
 
     public static boolean fitsCurrentChunk(Template template, BlockPos origin, Rotation rotation, Mirror mirror, int sourceChunkMinX, int sourceChunkMinZ) {
@@ -666,7 +667,7 @@ public final class TemplateWorldgenHelper {
                 }
                 BlockPos pos = new BlockPos(x, origin.getY() - 1, z);
                 for (int depth = 0; depth <= MAX_FOUNDATION_DEPTH && pos.getY() > 0 && isReplaceableOrAir(world, pos); depth++) {
-                    world.setBlockState(pos, fill, 2);
+                    world.setBlockState(pos, fill, PLACE_FLAGS);
                     pos = pos.down();
                 }
             }
