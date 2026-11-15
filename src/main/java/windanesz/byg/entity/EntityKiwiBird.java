@@ -33,6 +33,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import windanesz.byg.Config;
 import windanesz.byg.registry.ModItems;
+import windanesz.byg.registry.ModSounds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -251,7 +252,7 @@ public class EntityKiwiBird extends EntityAnimal {
         boolean isNight = time >= 13000 && time < 23000;
         if (!isNight) return null;
         
-        return net.minecraft.init.SoundEvents.ENTITY_CHICKEN_AMBIENT;
+        return ModSounds.KIWI_IDLE;
     }
 
     @Override
@@ -261,12 +262,12 @@ public class EntityKiwiBird extends EntityAnimal {
 
     @Override
     public SoundEvent getHurtSound(DamageSource ds) {
-        return net.minecraft.init.SoundEvents.ENTITY_CHICKEN_HURT;
+        return ModSounds.KIWI_HURT;
     }
 
     @Override
     public SoundEvent getDeathSound() {
-        return net.minecraft.init.SoundEvents.ENTITY_CHICKEN_DEATH;
+        return ModSounds.KIWI_HURT;
     }
 
     @Override

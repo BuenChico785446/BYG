@@ -1992,7 +1992,7 @@ public final class ModBlocks {
 
         registerBlock(registry, new BlockStonePebbles());
 
-        registerBlock(registry, createCutoutDropBlock("stone_spike", Material.ROCK, SoundType.STONE, "pickaxe", 1, 2.0f, 10.0f,
+        registerBlock(registry, createCutoutDropBlock("stone_spike", Material.ROCK, SoundType.STONE, "pickaxe", 0, 2.0f, 10.0f,
                 new AxisAlignedBB(5.0 / 16.0, 0.0, 5.0 / 16.0, 11.0 / 16.0, 31.0 / 16.0, 11.0 / 16.0),
                 () -> new ItemStack(Blocks.COBBLESTONE, 1)));
 

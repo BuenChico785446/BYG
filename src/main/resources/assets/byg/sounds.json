@@ -1,1 +1,18 @@
-{}
+{
+  "entity.kiwi.idle": {
+    "category": "neutral",
+    "sounds": [
+      "byg:entity/kiwi/idle",
+      "byg:entity/kiwi/idle2",
+      "byg:entity/kiwi/idle3",
+      "byg:entity/kiwi/idle4"
+    ]
+  },
+  "entity.kiwi.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "byg:entity/kiwi/hurt",
+      "byg:entity/kiwi/hurt2"
+    ]
+  }
+}

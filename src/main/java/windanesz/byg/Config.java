@@ -856,6 +856,21 @@ public final class Config {
         return Math.max(0, (int) Math.round(chancePerMillion * worldgenSettings.templateChanceMultiplier));
     }
 
+    public static double getSonoranCactusChanceMultiplier() {
+        ensureBaked();
+        return Math.max(0.0D, worldgenSettings.sonoranCactusChanceMultiplier);
+    }
+
+    public static int getSonoranCactusPatchSize() {
+        ensureBaked();
+        return Math.max(1, worldgenSettings.sonoranCactusPatchSize);
+    }
+
+    public static int getSonoranCactusSpacing() {
+        ensureBaked();
+        return Math.max(0, worldgenSettings.sonoranCactusSpacing);
+    }
+
     public static int scaleFlowerAttempts(int attempts) {
         ensureBaked();
         return Math.max(0, (int) Math.round(attempts * worldgenSettings.flowerAttemptMultiplier));
@@ -2126,6 +2141,18 @@ public final class Config {
         @net.minecraftforge.common.config.Config.Comment("Multiplies the per-chunk spawn chance of BYG template-based and related rare features in new chunks. 1.0 is the default; 0 skips these chance checks. Higher values cannot raise a chance above 100%.")
         @net.minecraftforge.common.config.Config.RangeDouble(min = 0.0, max = 10.0)
         public double templateChanceMultiplier = 1.0D;
+
+        @net.minecraftforge.common.config.Config.Comment("Multiplies the spawn chance of the large Sonoran cactus templates on top of the global template chance. 1.0 is the default; 0 disables them.")
+        @net.minecraftforge.common.config.Config.RangeDouble(min = 0.0, max = 10.0)
+        public double sonoranCactusChanceMultiplier = 1.0D;
+
+        @net.minecraftforge.common.config.Config.Comment("Spacing in chunks for Sonoran cactus patches: each spacing x spacing chunk area holds at most one patch. Higher values make patches rarer and more spread out; 0 or 1 puts a patch in every chunk.")
+        @net.minecraftforge.common.config.Config.RangeInt(min = 0, max = 16)
+        public int sonoranCactusSpacing = 3;
+
+        @net.minecraftforge.common.config.Config.Comment("Number of cacti grouped in one Sonoran cactus patch. Some may be skipped where the ground does not fit.")
+        @net.minecraftforge.common.config.Config.RangeInt(min = 1, max = 30)
+        public int sonoranCactusPatchSize = 10;
 
         @net.minecraftforge.common.config.Config.Comment("Multiplies BYG flower patch placement attempts in matching biomes when generating new chunks. 1.0 is the default; 0 skips these attempts. Increase gradually: higher values add generation work but do not guarantee proportionally more flowers because placement needs valid spots.")
         @net.minecraftforge.common.config.Config.RangeDouble(min = 0.0, max = 10.0)

@@ -53,7 +53,7 @@ public class SmeltingRecipes {
         if (windanesz.byg.registry.ModBlocks.white_sand != null) {
             GameRegistry.addSmelting(new ItemStack(windanesz.byg.registry.ModBlocks.white_sand, 1), new ItemStack((Block) Blocks.STAINED_GLASS, 1, 0), 1.0f);
         }
-        for (Block cactus : new Block[]{ModBlocks.sonoran_cactus, ModBlocks.sonoran_cactus_flowering}) {
+        for (Block cactus : new Block[]{ModBlocks.sonoran_cactus, ModBlocks.sonoran_cactus_flowering, ModBlocks.mini_cactus, ModBlocks.golden_spined_cactus}) {
             if (cactus != null) {
                 GameRegistry.addSmelting(new ItemStack(cactus, 1), new ItemStack(Items.DYE, 1, EnumDyeColor.GREEN.getDyeDamage()), 0.2f);
             }

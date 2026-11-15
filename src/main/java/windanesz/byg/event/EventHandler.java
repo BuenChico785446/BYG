@@ -3,6 +3,7 @@ package windanesz.byg.event;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -20,16 +21,19 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFishingRod;
+import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.IShearable;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.ItemFishedEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -38,6 +42,8 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import windanesz.byg.BiomesYouGo;
 import windanesz.byg.Config;
 import windanesz.byg.armour.ArmorMaterialKasai;
+import windanesz.byg.blocks.BlockPetalBase;
+import windanesz.byg.blocks.BlockThornBranches;
 import windanesz.byg.registry.ModItems;
 import windanesz.byg.registry.ModPotions;
 
@@ -54,6 +60,38 @@ public final class EventHandler {
     private EventHandler() {
     }
 
+
+    @SubscribeEvent
+    public static void onPlantHarvestedWithShears(BlockEvent.HarvestDropsEvent event) {
+        EntityPlayer harvester = event.getHarvester();
+        if (harvester == null || event.isSilkTouching() || !isShears(harvester.getHeldItemMainhand())) {
+            return;
+        }
+        IBlockState state = event.getState();
+        Block block = state.getBlock();
+        Item item = Item.getItemFromBlock(block);
+        if (item == Items.AIR || !isCuttablePlant(state)) {
+            return;
+        }
+        event.getDrops().clear();
+        event.getDrops().add(new ItemStack(item, 1, block.damageDropped(state)));
+        event.setDropChance(1.0f);
+    }
+
+    private static boolean isShears(ItemStack stack) {
+        return stack.getItem() instanceof ItemShears || stack.getItem().getToolClasses(stack).contains("shears");
+    }
+
+    private static boolean isCuttablePlant(IBlockState state) {
+        Block block = state.getBlock();
+        ResourceLocation id = block.getRegistryName();
+        if (id == null || !BiomesYouGo.MODID.equals(id.getNamespace()) || block instanceof IShearable) {
+            return false;
+        }
+        Material material = state.getMaterial();
+        return material == Material.PLANTS || material == Material.CORAL || material == Material.VINE || material == Material.CACTUS
+                || block instanceof BlockPetalBase || block instanceof BlockThornBranches;
+    }
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {

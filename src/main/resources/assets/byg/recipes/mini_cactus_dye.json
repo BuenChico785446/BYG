@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "byg:biome_content_enabled",
+      "set": "cacti"
+    }
+  ],
+  "group": "byg",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "byg:wooden_mortar"
+    },
+    {
+      "item": "byg:mini_cactus"
+    }
+  ],
+  "result": {
+    "item": "minecraft:dye",
+    "data": 2,
+    "count": 1
+  }
+}

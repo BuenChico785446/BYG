@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "byg:biome_content_enabled",
+      "set": "ground_cover"
+    }
+  ],
+  "group": "byg",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "byg:wooden_mortar"
+    },
+    {
+      "item": "byg:tiny_lilypad"
+    }
+  ],
+  "result": {
+    "item": "minecraft:dye",
+    "data": 10,
+    "count": 1
+  }
+}

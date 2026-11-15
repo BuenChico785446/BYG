@@ -36,8 +36,8 @@ public class BlockStonePebbles
         this.setRegistryName("stone_pebbles");
         this.setTranslationKey("stone_pebbles");
         this.setSoundType(SoundType.STONE);
-        this.setHarvestLevel("pickaxe", 1);
-        this.setHardness(0.8f);
+        this.setHarvestLevel("pickaxe", 0);
+        this.setHardness(0.4f);
         this.setResistance(10.0f);
         this.setLightLevel(0.0f);
         this.setLightOpacity(0);
@@ -101,6 +101,11 @@ public class BlockStonePebbles
 
     public MapColor getMapColor(IBlockState state, IBlockAccess blockAccess, BlockPos pos) {
         return MapColor.STONE;
+    }
+
+    @Override
+    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
+        return true;
     }
 
     public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player) {

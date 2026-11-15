@@ -20,6 +20,8 @@ import org.apache.logging.log4j.Logger;
 import windanesz.byg.BiomesYouGo;
 import windanesz.byg.registry.ModBlocks;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -38,6 +40,7 @@ public final class TemplateWorldgenHelper {
      */
     private static final int CHUNK_BORDER_MARGIN = 2;
     private static final int PLACE_FLAGS = 2 | 16;
+    private static final Pattern SONORAN_CACTUS_TEMPLATE = Pattern.compile("cact[1-4]");
 
     private TemplateWorldgenHelper() {
     }
@@ -77,14 +80,72 @@ public final class TemplateWorldgenHelper {
         };
     }
 
+    private static void generateSonoranCactusPatch(Random random, int chunkX, int chunkZ, World world, int dimID,
+                                                   ResourceLocation biomeId, Config config) {
+        int chunkIndexX = Math.floorDiv(chunkX - 8, 16);
+        int chunkIndexZ = Math.floorDiv(chunkZ - 8, 16);
+        int spacing = windanesz.byg.Config.getSonoranCactusSpacing();
+        int cellX = spacing > 1 ? Math.floorDiv(chunkIndexX, spacing) : chunkIndexX;
+        int cellZ = spacing > 1 ? Math.floorDiv(chunkIndexZ, spacing) : chunkIndexZ;
+        Random cell = new Random(world.getSeed() ^ cellX * 341873128712L ^ cellZ * 132897987541L ^ 0x5C4C7A5L);
+        if (spacing > 1 && (Math.floorMod(chunkIndexX, spacing) != cell.nextInt(spacing) || Math.floorMod(chunkIndexZ, spacing) != cell.nextInt(spacing))) {
+            return;
+        }
+        if (cell.nextDouble() >= Math.min(1.0D, 0.75D * windanesz.byg.Config.getSonoranCactusChanceMultiplier())) {
+            return;
+        }
+
+        int centerX = chunkX + 8 + cell.nextInt(5) - 2;
+        int centerZ = chunkZ + 8 + cell.nextInt(5) - 2;
+        int members = windanesz.byg.Config.getSonoranCactusPatchSize();
+        List<int[]> layout = new ArrayList<>();
+        for (int attempt = 0; attempt < 400 && layout.size() < members; attempt++) {
+            int dx = cell.nextInt(17) - 8;
+            int dz = cell.nextInt(17) - 8;
+            if (dx * dx + dz * dz > 64) {
+                continue;
+            }
+            boolean spaced = true;
+            for (int[] other : layout) {
+                int ox = other[0] - dx;
+                int oz = other[1] - dz;
+                if (ox * ox + oz * oz < 16) {
+                    spaced = false;
+                    break;
+                }
+            }
+            if (spaced) {
+                layout.add(new int[]{dx, dz});
+            }
+        }
+
+        int variant = config.templatePath.charAt(4) - '1';
+        for (int i = variant; i < layout.size(); i += 4) {
+            int[] offset = layout.get(i);
+            generate(random, chunkX, chunkZ, world, dimID, biomeId, config, new int[]{centerX + offset[0], centerZ + offset[1]});
+        }
+    }
+
     public static void generate(Random random, int chunkX, int chunkZ, World world, int dimID,
                                 ResourceLocation biomeId, Config config) {
+        generate(random, chunkX, chunkZ, world, dimID, biomeId, config, null);
+    }
+
+    private static void generate(Random random, int chunkX, int chunkZ, World world, int dimID,
+                                 ResourceLocation biomeId, Config config, int[] patchTarget) {
         if (!windanesz.byg.Config.isFeatureDimension(dimID) || world.isRemote || !windanesz.byg.Config.isTemplateEnabled(config.templatePath)) {
             return;
         }
-        int configuredChance = windanesz.byg.Config.scaleTemplateChance(config.chancePerMillion);
-        if (configuredChance <= 0 || random.nextInt(1000000) >= configuredChance) {
+        boolean sonoranCactus = SONORAN_CACTUS_TEMPLATE.matcher(config.templatePath).matches();
+        if (sonoranCactus && patchTarget == null) {
+            generateSonoranCactusPatch(random, chunkX, chunkZ, world, dimID, biomeId, config);
             return;
+        }
+        if (!sonoranCactus) {
+            int configuredChance = windanesz.byg.Config.scaleTemplateChance(config.chancePerMillion);
+            if (configuredChance <= 0 || random.nextInt(1000000) >= configuredChance) {
+                return;
+            }
         }
         if (config.tree && !BygTreePlacement.allowTrees(world, random, new BlockPos(chunkX, 128, chunkZ))) {
             return;
@@ -135,6 +196,9 @@ public final class TemplateWorldgenHelper {
         if (clipToWindow) {
             x = clippedOrigin(random, safeMinX, safeMaxX, bounds[0], bounds[1]);
             z = clippedOrigin(random, safeMinZ, safeMaxZ, bounds[2], bounds[3]);
+        } else if (patchTarget != null) {
+            x = patchTarget[0] - (bounds[0] + bounds[1]) / 2;
+            z = patchTarget[1] - (bounds[2] + bounds[3]) / 2;
         } else {
             x = randomSafeOrigin(random, chunkX, bounds[0], bounds[1], safeMinX, safeMaxX);
             z = randomSafeOrigin(random, chunkZ, bounds[2], bounds[3], safeMinZ, safeMaxZ);
@@ -253,7 +317,7 @@ public final class TemplateWorldgenHelper {
                 lowest = Math.min(lowest, groundY);
                 highest = Math.max(highest, groundY);
             }
-            if (highest - lowest > 1) {
+            if (highest - lowest > (config.templatePath.startsWith("baobab") ? 2 : 1)) {
                 return;
             }
             // Same convention as the scan above: the origin layer replaces the ground block it stands on.
@@ -345,6 +409,10 @@ public final class TemplateWorldgenHelper {
             case "greatoak_tree3": return new int[][]{{5, 7}, {6, 6}, {6, 7}, {6, 8}, {7, 5}, {7, 6}, {7, 7}, {7, 8}, {7, 9}, {8, 6}, {8, 7}, {8, 8}, {9, 7}};
             case "greatoak_tree4": return new int[][]{{6, 8}, {7, 7}, {7, 8}, {7, 9}, {8, 6}, {8, 7}, {8, 8}, {8, 9}, {8, 10}, {9, 7}, {9, 8}, {9, 9}, {10, 8}};
             case "greatoak_tree5": return new int[][]{{4, 7}, {5, 6}, {5, 7}, {6, 5}, {6, 6}, {6, 7}, {6, 8}, {7, 7}};
+            case "baobab_tree1":
+            case "baobab_tree2": return new int[][]{{6, 9}, {6, 10}, {7, 8}, {7, 9}, {7, 10}, {7, 11}, {8, 7}, {8, 8}, {8, 9}, {8, 10}, {8, 11}, {8, 12}, {9, 7}, {9, 8}, {9, 9}, {9, 10}, {9, 11}, {9, 12}, {10, 8}, {10, 9}, {10, 10}, {10, 11}, {11, 9}, {11, 10}};
+            case "baobabtree1":
+            case "baobabtree2": return new int[][]{{6, 8}, {6, 9}, {7, 8}, {7, 9}, {7, 10}, {8, 7}, {8, 8}, {8, 9}, {8, 10}, {8, 11}, {9, 7}, {9, 8}, {9, 9}, {9, 10}, {10, 8}, {10, 9}};
             case "flower1": return new int[][]{{3, 4}, {4, 4}, {4, 5}};
             case "flower2": return new int[][]{{4, 3}, {5, 2}, {5, 3}, {6, 6}, {6, 7}, {7, 7}};
             case "redoak_tree1":
