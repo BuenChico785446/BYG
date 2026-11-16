@@ -597,7 +597,9 @@ public final class TemplateWorldgenHelper {
 
 
     public static void placeTemplateWithSettings(World world, Template template, BlockPos spawnTo, PlacementSettings settings) {
-        template.addBlocksToWorld(world, spawnTo, settings, PLACE_FLAGS);
+        if (!TemplateBlockPlacer.place(world, template, spawnTo, settings, PLACE_FLAGS)) {
+            template.addBlocksToWorld(world, spawnTo, settings, PLACE_FLAGS);
+        }
     }
 
     public static boolean fitsCurrentChunk(Template template, BlockPos origin, Rotation rotation, Mirror mirror, int sourceChunkMinX, int sourceChunkMinZ) {

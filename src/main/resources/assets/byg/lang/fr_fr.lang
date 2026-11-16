@@ -275,6 +275,7 @@ tile.cika_door_open_bottom.name=Baobab Door
 tile.poison_ivy.name=Poision Ivy
 tile.rainbow_eucalyptus_stairs.name=Rainbow Eucalyptus Stairs
 tile.maple_planks.name=Maple Planks
+container.crate=Crate
 tile.crate.name=Crate
 item.cypress_door.name=Cypress Door
 tile.magenta_celosia.name=Magenta Celosia

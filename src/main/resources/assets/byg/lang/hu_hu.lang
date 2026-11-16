@@ -252,6 +252,7 @@ tile.cika_wood.name=Cikász Fa
 tile.cika_wood_wall.name=Cikász Fal
 tile.clover.name=Lóhere
 tile.cracked_sand.name=Repedezett Homok
+container.crate=Láda
 tile.crate.name=Láda
 tile.crocus.name=Sáfrány
 tile.cyan_amaranth.name=Cián Amaránt

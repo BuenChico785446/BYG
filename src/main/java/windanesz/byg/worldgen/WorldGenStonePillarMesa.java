@@ -22,6 +22,7 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
     private static final IBlockState DIRT = Blocks.DIRT.getDefaultState();
     private static final IBlockState COARSE_DIRT = Blocks.DIRT.getStateFromMeta(1);
     private static final IBlockState GRASS = Blocks.GRASS.getDefaultState();
+    private static final IBlockState AIR = Blocks.AIR.getDefaultState();
 
     @Override
     public boolean generate(World world, Random rand, BlockPos position) {
@@ -203,7 +204,7 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
                 BlockPos basePos = new BlockPos(worldX, surfaceY - 1 + rise, worldZ);
                 BlockPos topPos = basePos.up();
 
-                clearAbove(out.world(), topPos, 7);
+                clearAbove(out, topPos, 7);
 
                 if (topNoise > 0.0f || (fertileCore && topNoise > -0.30f)) {
                     out.set(topPos, GRASS);
@@ -407,9 +408,7 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
     }
 
     private static boolean canAnchorTo(Block block) {
-        return block == Blocks.GRASS
-                || block == Blocks.DIRT
-                || block == Blocks.STONE
+        return block == Blocks.STONE
                 || block == Blocks.HARDENED_CLAY
                 || block == Blocks.STAINED_HARDENED_CLAY
                 || block == Blocks.SANDSTONE
@@ -417,14 +416,15 @@ public class WorldGenStonePillarMesa extends WorldGenerator {
                 || block == Blocks.SAND;
     }
 
-    private static void clearAbove(World world, BlockPos start, int height) {
+    private static void clearAbove(FastBlockWriter out, BlockPos start, int height) {
+        World world = out.world();
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos(start);
         for (int i = 0; i < height; i++) {
-            IBlockState state = world.getBlockState(cursor);
+            IBlockState state = out.get(cursor.getX(), cursor.getY(), cursor.getZ());
             Block block = state.getBlock();
             if (!block.isAir(state, world, cursor)
                     && (state.getMaterial().isReplaceable() || state.getMaterial().isLiquid() || block.isLeaves(state, world, cursor))) {
-                world.setBlockToAir(cursor);
+                out.set(cursor, AIR);
             }
             cursor.move(EnumFacing.UP);
         }

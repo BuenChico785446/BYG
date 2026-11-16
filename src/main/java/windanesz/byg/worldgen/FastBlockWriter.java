@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 
-/** Writes plain terrain blocks straight into the chunk; everything else goes through {@link World#setBlockState}. */
+/** Writes blocks straight into the chunk, skipping {@link World#setBlockState}; {@link #set} only does so for plain terrain blocks. */
 public final class FastBlockWriter {
 
     private static final int FALLBACK_FLAGS = 2 | 16;
@@ -43,11 +43,33 @@ public final class FastBlockWriter {
         if (old == state) {
             return;
         }
-        BlockPos pos = new BlockPos(x, y, z);
         if (!isPlain(old) || !isPlain(state)) {
-            world.setBlockState(pos, state, FALLBACK_FLAGS);
+            world.setBlockState(new BlockPos(x, y, z), state, FALLBACK_FLAGS);
             return;
         }
+        write(target, x, y, z, old, state);
+    }
+
+    public void setDirect(int x, int y, int z, IBlockState state) {
+        if (y < 0 || y > 255) {
+            return;
+        }
+        Chunk target = chunkAt(x >> 4, z >> 4);
+        IBlockState old = target.getBlockState(x & 15, y, z & 15);
+        if (old != state) {
+            write(target, x, y, z, old, state);
+        }
+    }
+
+    public IBlockState get(int x, int y, int z) {
+        if (y < 0 || y > 255) {
+            return Blocks.AIR.getDefaultState();
+        }
+        return chunkAt(x >> 4, z >> 4).getBlockState(x & 15, y, z & 15);
+    }
+
+    private void write(Chunk target, int x, int y, int z, IBlockState old, IBlockState state) {
+        BlockPos pos = new BlockPos(x, y, z);
         if (target.setBlockState(pos, state) == null) {
             return;
         }

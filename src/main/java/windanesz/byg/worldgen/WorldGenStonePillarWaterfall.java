@@ -33,9 +33,10 @@ public class WorldGenStonePillarWaterfall extends WorldGenerator {
             return false;
         }
 
-        carveOutlet(world, topSurface, path);
-        carveFallColumn(world, topSurface, path);
-        buildPond(world, path);
+        FastBlockWriter out = new FastBlockWriter(world);
+        carveOutlet(out, topSurface, path);
+        carveFallColumn(out, topSurface, path);
+        buildPond(world, out, path);
         placeWaterFeed(world, topSurface, path);
         return true;
     }
@@ -72,21 +73,21 @@ public class WorldGenStonePillarWaterfall extends WorldGenerator {
         return -1;
     }
 
-    private static void carveOutlet(World world, BlockPos topSurface, WaterfallPath path) {
+    private static void carveOutlet(FastBlockWriter out, BlockPos topSurface, WaterfallPath path) {
         for (int distance = 1; distance <= path.edgeDistance + 1; distance++) {
             BlockPos outletPos = topSurface.offset(path.direction, distance);
-            clearBlock(world, outletPos);
-            clearBlock(world, outletPos.up());
+            clearBlock(out, outletPos);
+            clearBlock(out, outletPos.up());
         }
     }
 
-    private static void carveFallColumn(World world, BlockPos topSurface, WaterfallPath path) {
+    private static void carveFallColumn(FastBlockWriter out, BlockPos topSurface, WaterfallPath path) {
         for (int y = topSurface.getY(); y > path.groundSurface.getY(); y--) {
-            clearBlock(world, new BlockPos(path.fallPos.getX(), y, path.fallPos.getZ()));
+            clearBlock(out, new BlockPos(path.fallPos.getX(), y, path.fallPos.getZ()));
         }
     }
 
-    private static void buildPond(World world, WaterfallPath path) {
+    private static void buildPond(World world, FastBlockWriter out, WaterfallPath path) {
         int radius = 1;
         int pondY = path.groundSurface.getY();
         for (int dx = -radius; dx <= radius; dx++) {
@@ -96,7 +97,7 @@ public class WorldGenStonePillarWaterfall extends WorldGenerator {
                 }
 
                 BlockPos pondPos = new BlockPos(path.fallPos.getX() + dx, pondY, path.fallPos.getZ() + dz);
-                clearBlock(world, pondPos.up());
+                clearBlock(out, pondPos.up());
                 placeWater(world, pondPos);
             }
         }
@@ -112,9 +113,9 @@ public class WorldGenStonePillarWaterfall extends WorldGenerator {
         placeWater(world, fallStart);
     }
 
-    private static void clearBlock(World world, BlockPos pos) {
-        if (world.getBlockState(pos).getBlock() != Blocks.BEDROCK) {
-            world.setBlockState(pos, AIR, 2);
+    private static void clearBlock(FastBlockWriter out, BlockPos pos) {
+        if (out.get(pos.getX(), pos.getY(), pos.getZ()).getBlock() != Blocks.BEDROCK) {
+            out.set(pos, AIR);
         }
     }
 

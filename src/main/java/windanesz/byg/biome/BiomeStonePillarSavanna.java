@@ -22,6 +22,7 @@ import java.util.Random;
 
 public class BiomeStonePillarSavanna extends Biome {
 
+    private static final int PLACE_FLAGS = 2 | 16;
     private static final WorldGenStonePillarMesa PILLAR_MESA_GENERATOR = new WorldGenStonePillarMesa();
     private static final WorldGenStonePillarSavannaChasm CHASM_GENERATOR = new WorldGenStonePillarSavannaChasm();
     private static final WorldGenStonePillarSavannaMound MOUND_GENERATOR = new WorldGenStonePillarSavannaMound();
@@ -115,7 +116,7 @@ public class BiomeStonePillarSavanna extends Biome {
                 if (cactusPos.getY() <= worldIn.getSeaLevel() + 15 && worldIn.isAirBlock(cactusPos)
                         && !worldIn.getBlockState(cactusPos.down()).getMaterial().isLiquid()) {
                     boolean flowering = rand.nextInt(3) == 0;
-                    worldIn.setBlockState(cactusPos, (flowering ? ModBlocks.sonoran_cactus_flowering : ModBlocks.sonoran_cactus).getDefaultState(), 2);
+                    worldIn.setBlockState(cactusPos, (flowering ? ModBlocks.sonoran_cactus_flowering : ModBlocks.sonoran_cactus).getDefaultState(), PLACE_FLAGS);
                 }
             }
         }
@@ -123,7 +124,7 @@ public class BiomeStonePillarSavanna extends Biome {
             BlockPos miniPos = worldIn.getHeight(pos.add(rand.nextInt(16) + 8, 0, rand.nextInt(16) + 8));
             if (miniPos.getY() <= worldIn.getSeaLevel() + 15 && worldIn.isAirBlock(miniPos)
                     && !worldIn.getBlockState(miniPos.down()).getMaterial().isLiquid()) {
-                worldIn.setBlockState(miniPos, ModBlocks.mini_cactus.getDefaultState(), 2);
+                worldIn.setBlockState(miniPos, ModBlocks.mini_cactus.getDefaultState(), PLACE_FLAGS);
             }
         }
     }
@@ -133,7 +134,7 @@ public class BiomeStonePillarSavanna extends Biome {
         for (int i = 0; i < attempts; i++) {
             BlockPos shrubPos = worldIn.getHeight(pos.add(rand.nextInt(16) + 8, 0, rand.nextInt(16) + 8));
             if (worldIn.isAirBlock(shrubPos) && Blocks.DEADBUSH.canPlaceBlockAt(worldIn, shrubPos)) {
-                worldIn.setBlockState(shrubPos, Blocks.DEADBUSH.getDefaultState(), 2);
+                worldIn.setBlockState(shrubPos, Blocks.DEADBUSH.getDefaultState(), PLACE_FLAGS);
             }
         }
     }
@@ -157,7 +158,7 @@ public class BiomeStonePillarSavanna extends Biome {
         for (int i = 0; i < 8; i++) {
             BlockPos grassPos = randomPatchSurface(worldIn, rand, centerPos);
             if (grassPos != null && worldIn.isAirBlock(grassPos) && ModBlocks.dead_grass.canPlaceBlockAt(worldIn, grassPos)) {
-                worldIn.setBlockState(grassPos, ModBlocks.dead_grass.getDefaultState(), 2);
+                worldIn.setBlockState(grassPos, ModBlocks.dead_grass.getDefaultState(), PLACE_FLAGS);
             }
         }
     }
@@ -199,7 +200,7 @@ public class BiomeStonePillarSavanna extends Biome {
             }
             cursor.setPos(x, y, z);
             if (worldIn.isAirBlock(cursor) && Blocks.TALLGRASS.canBlockStay(worldIn, cursor, TALL_GRASS)) {
-                worldIn.setBlockState(cursor, TALL_GRASS, 2);
+                worldIn.setBlockState(cursor, TALL_GRASS, PLACE_FLAGS);
             }
         }
     }

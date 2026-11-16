@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerChest;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
@@ -23,9 +24,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import windanesz.byg.BiomesYouGo;
 import windanesz.byg.client.BYGTab;
-import windanesz.byg.client.gui.GuiCrate;
 
 public class BlockCrate
         extends Block
@@ -90,9 +89,13 @@ public class BlockCrate
         return 0;
     }
 
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
-        super.onBlockActivated(world, pos, state, entity, hand, side, hitX, hitY, hitZ);
-        entity.openGui(BiomesYouGo.instance, GuiCrate.GUIID, world, pos.getX(), pos.getY(), pos.getZ());
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (!world.isRemote) {
+            TileEntity tileentity = world.getTileEntity(pos);
+            if (tileentity instanceof TileEntityCrate) {
+                player.displayGUIChest((IInventory) tileentity);
+            }
+        }
         return true;
     }
 

@@ -256,6 +256,7 @@ tile.cika_wood.name=Cika Wood
 tile.cika_wood_wall.name=Cika Wall
 tile.clover.name=Clover
 tile.cracked_sand.name=Cracked Sand
+container.crate=Crate
 tile.crate.name=Crate
 tile.crocus.name=Crocus
 tile.cyan_amaranth.name=Cyan Amaranth
